@@ -430,6 +430,71 @@ h1.job-title{font-size:23px;font-weight:700;color:var(--ink);letter-spacing:-.01
 }
 
 /* ============================================================
+   SEND-PROPOSAL FLOW (modal desktop / full-screen sheet mobile)
+   ============================================================ */
+.pr-backdrop{position:fixed;inset:0;z-index:80;background:rgba(11,18,32,.5);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .2s;}
+.pr-backdrop.open{opacity:1;pointer-events:auto;}
+.pr-modal{background:var(--surface);border-radius:var(--r-sheet);box-shadow:var(--shadow-sheet);width:100%;max-width:560px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;transform:translateY(12px) scale(.98);opacity:0;transition:transform .22s,opacity .22s;}
+.pr-backdrop.open .pr-modal{transform:none;opacity:1;}
+.pr-head{display:flex;align-items:center;justify-content:space-between;padding:15px 20px;border-bottom:1px solid var(--line);flex:0 0 auto;}
+.pr-brand{display:flex;align-items:center;gap:9px;font-family:'Inter Tight';font-weight:700;color:var(--ink);font-size:15px;}
+.pr-brand .logo-sm{width:28px;height:28px;border-radius:8px;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;}
+.pr-brand .logo-sm .i{width:16px;height:16px;}
+.pr-brand .tag{font-family:'Inter';font-weight:600;font-size:11.5px;color:var(--muted);background:var(--canvas);padding:2px 9px;border-radius:999px;}
+.pr-step{display:flex;flex-direction:column;min-height:0;flex:1;}
+.pr-step[hidden]{display:none;}
+.pr-body{padding:20px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:14px;}
+.pr-foot{display:flex;gap:10px;padding:14px 20px;border-top:1px solid var(--line);flex:0 0 auto;justify-content:flex-end;}
+.pr-foot .left{margin-right:auto;}
+.pr-foot .btn[disabled]{opacity:.65;cursor:default;}
+
+/* Branded proposal preview */
+.pr-doc{border:1px solid var(--line);border-radius:var(--r-card);overflow:hidden;}
+.pr-doc-head{display:flex;align-items:center;justify-content:space-between;padding:15px 18px;background:var(--primary);color:#fff;}
+.pr-doc-brand{display:flex;align-items:center;gap:8px;font-family:'Inter Tight';font-weight:700;font-size:16px;}
+.pr-doc-brand .i{width:18px;height:18px;}
+.pr-doc-meta{text-align:right;font-size:11.5px;opacity:.92;line-height:1.4;}
+.pr-doc-meta b{font-size:13px;font-variant-numeric:tabular-nums;}
+.pr-parties{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:16px 18px;border-bottom:1px solid var(--line);}
+.pr-parties label{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);}
+.pr-parties .nm{font-weight:600;color:var(--ink);margin-top:4px;font-size:14px;}
+.pr-parties .ad{color:var(--muted);font-size:12.5px;margin-top:2px;}
+.pr-items{width:100%;border-collapse:collapse;}
+.pr-items td{padding:11px 18px;border-bottom:1px solid var(--line);font-size:13px;vertical-align:top;}
+.pr-items td.amt{text-align:right;font-variant-numeric:tabular-nums;font-weight:600;color:var(--ink);white-space:nowrap;}
+.pr-items td.desc{color:var(--body);}
+.pr-totals{padding:12px 18px;background:var(--canvas);}
+.pr-totals .r{display:flex;justify-content:space-between;padding:3px 0;font-size:13px;color:var(--body);}
+.pr-totals .r .num{font-variant-numeric:tabular-nums;font-weight:600;color:var(--ink);}
+.pr-totals .r.total{font-size:16px;font-weight:700;color:var(--ink);border-top:1px solid var(--line);margin-top:6px;padding-top:10px;}
+.pr-esign{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;border-top:1px solid var(--line);}
+.pr-esign .lbl{font-weight:600;font-size:13.5px;color:var(--ink);}
+.pr-esign .sub{font-size:12px;color:var(--muted);margin-top:1px;}
+
+/* Send step */
+.pr-cc{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--body);cursor:pointer;}
+.pr-cc input{width:17px;height:17px;accent-color:var(--primary);}
+
+/* Success step */
+.pr-success{align-items:center;text-align:center;gap:5px;padding:30px 24px 20px;}
+.pr-check{width:60px;height:60px;border-radius:50%;background:var(--success-tint);color:var(--success);display:flex;align-items:center;justify-content:center;margin-bottom:6px;}
+.pr-check .i{width:32px;height:32px;}
+.pr-success h3{font-family:'Inter Tight';font-size:20px;font-weight:700;color:var(--ink);}
+.pr-success .psub{color:var(--muted);font-size:13.5px;}
+.pr-signals{width:100%;margin-top:16px;display:flex;flex-direction:column;gap:8px;text-align:left;}
+.pr-signal{display:flex;align-items:center;gap:10px;padding:11px 13px;border:1px solid var(--line);border-radius:var(--r-control);font-size:13px;color:var(--body);}
+.pr-signal .i{width:16px;height:16px;flex:0 0 auto;color:var(--success);}
+.pr-signal b{color:var(--ink);font-weight:600;}
+
+/* Financial awaiting-signature state */
+.fin-status{margin:0 0 14px;}
+.btn.is-awaiting{background:var(--info-tint);border-color:transparent;color:var(--info);opacity:1;}
+
+/* Pipeline "suggested next" */
+.stage.suggested .stage-node{border-color:var(--primary);border-style:dashed;color:var(--primary);}
+.stage.suggested .stage-label{color:var(--primary);font-weight:600;}
+
+/* ============================================================
    MOBILE LAYOUT (≤640px)
    ============================================================ */
 .mobile{display:none;}
@@ -607,6 +672,16 @@ h1.job-title{font-size:23px;font-weight:700;color:var(--ink);letter-spacing:-.01
   }
   .cmp-backdrop.open .composer{transform:none;}
   .cmp-foot .btn{flex:1;justify-content:center;padding:12px;}
+
+  /* Proposal = full-screen sheet on mobile */
+  .pr-backdrop{padding:0;}
+  .pr-modal{max-width:none;max-height:none;width:100vw;height:100vh;border-radius:0;transform:translateY(100%);}
+  .pr-backdrop.open .pr-modal{transform:none;}
+  .pr-head{padding-top:calc(15px + env(safe-area-inset-top));}
+  .pr-foot{padding-bottom:calc(14px + env(safe-area-inset-bottom));flex-wrap:wrap;}
+  .pr-foot .btn{flex:1;justify-content:center;padding:12px;white-space:nowrap;}
+  .pr-parties{grid-template-columns:1fr;}
+  .m-chip.suggested{border-color:var(--primary);border-style:dashed;color:var(--primary);}
 }
 </style>
 </head>
@@ -689,7 +764,7 @@ h1.job-title{font-size:23px;font-weight:700;color:var(--ink);letter-spacing:-.01
             <div class="eyebrow"><i data-lucide="zap" class="i"></i>Recommended next step</div>
             <h3>Send the estimate to Marcus</h3>
             <div class="sub"><i data-lucide="check-circle-2" class="i"></i>Inspection completed Jul 22 · estimate ready</div>
-            <button class="btn-accent" onclick="toast('Proposal sent to Marcus')"><i data-lucide="play" class="i"></i>Send proposal</button>
+            <button class="btn-accent" onclick="openProposal()"><i data-lucide="play" class="i"></i>Send proposal</button>
           </div>
 
           <div class="card propcard">
@@ -762,7 +837,7 @@ h1.job-title{font-size:23px;font-weight:700;color:var(--ink);letter-spacing:-.01
       <div class="sub" style="display:flex;align-items:center;gap:7px;color:var(--body);font-size:12.5px;margin-bottom:14px;">
         <i data-lucide="check-circle-2" class="i" style="width:15px;height:15px;color:var(--success);flex:0 0 auto;"></i>Inspection done Jul 22 · estimate ready
       </div>
-      <button class="btn-accent" onclick="toast('Proposal sent to Marcus')"><i data-lucide="play" class="i"></i>Send proposal</button>
+      <button class="btn-accent" onclick="openProposal()"><i data-lucide="play" class="i"></i>Send proposal</button>
     </div>
 
     <!-- Property -->
@@ -885,7 +960,7 @@ h1.job-title{font-size:23px;font-weight:700;color:var(--ink);letter-spacing:-.01
           <div class="fin-total"><span class="lbl">Estimate total</span><span class="amt num">$18,450</span></div>
           <div class="fin-row"><span class="k">Deposit (30%)</span><span class="v num">$5,535</span></div>
           <div class="fin-row"><span class="k">Balance due</span><span class="v num">$12,915</span></div>
-          <button class="btn btn-primary" onclick="toast('Proposal sent to Marcus')"><i data-lucide="send" class="i"></i>Send proposal</button>
+          <button class="btn btn-primary" onclick="openProposal()"><i data-lucide="send" class="i"></i>Send proposal</button>
         </div>
       </div>
     </div>
@@ -893,7 +968,7 @@ h1.job-title{font-size:23px;font-weight:700;color:var(--ink);letter-spacing:-.01
     <div class="m-acc" data-macc>
       <button class="m-acc-head" onclick="toggleM(this)">
         <span class="m-acc-ic"><i data-lucide="folder" class="i"></i></span>
-        <span class="m-acc-tt"><span class="t">Documents</span><span class="s">3 files</span></span>
+        <span class="m-acc-tt"><span class="t">Documents</span><span class="s" id="mDocSummary">3 files</span></span>
         <i data-lucide="chevron-down" class="i m-acc-chev"></i>
       </button>
       <div class="m-acc-body">
@@ -1072,7 +1147,7 @@ h1.job-title{font-size:23px;font-weight:700;color:var(--ink);letter-spacing:-.01
       </div>
       <div class="fin-row"><span class="k">Deposit (30%)</span><span class="v num">$5,535</span></div>
       <div class="fin-row"><span class="k">Balance due</span><span class="v num">$12,915</span></div>
-      <button class="btn btn-primary" onclick="toast('Proposal sent to Marcus')"><i data-lucide="send" class="i"></i>Send proposal</button>
+      <button class="btn btn-primary" onclick="openProposal()"><i data-lucide="send" class="i"></i>Send proposal</button>
     </div>
   </div>
 
@@ -1138,6 +1213,91 @@ h1.job-title{font-size:23px;font-weight:700;color:var(--ink);letter-spacing:-.01
     <div class="cmp-foot">
       <button class="btn" id="cmpCancel" onclick="closeComposer()">Cancel</button>
       <button class="btn btn-primary" id="cmpSubmit" onclick="submitComposer()"><span id="cmpSubmitLabel">Save</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- Send-proposal flow (modal desktop / full-screen sheet mobile) -->
+<div class="pr-backdrop" id="prBackdrop" onclick="closeProposal(event)">
+  <div class="pr-modal" role="dialog" aria-modal="true" aria-labelledby="prBrand" onclick="event.stopPropagation()">
+    <div class="pr-head">
+      <div class="pr-brand" id="prBrand"><span class="logo-sm"><i data-lucide="hard-hat" class="i"></i></span>RoofPilot<span class="tag">Proposal</span></div>
+      <button class="cmp-close" aria-label="Close" onclick="closeProposal()"><i data-lucide="x" class="i"></i></button>
+    </div>
+
+    <!-- STEP 1 · REVIEW -->
+    <div class="pr-step" data-step="review">
+      <div class="pr-body">
+        <div class="pr-doc">
+          <div class="pr-doc-head">
+            <div class="pr-doc-brand"><i data-lucide="hard-hat" class="i"></i>RoofPilot</div>
+            <div class="pr-doc-meta"><b class="num">Proposal #P-1043</b><br>From Estimate #E-2211<br><span class="num">Jul 30, 2026</span></div>
+          </div>
+          <div class="pr-parties">
+            <div><label>Prepared for</label><div class="nm">Marcus Henderson</div><div class="ad">1234 Texas Avenue, Shreveport, LA 71101</div></div>
+            <div><label>Prepared by</label><div class="nm">Sam Wells</div><div class="ad">RoofPilot · Estimating</div></div>
+          </div>
+          <table class="pr-items">
+            <tr><td class="desc">GAF Timberline HDZ — tear-off &amp; replace</td><td class="amt num">$14,200</td></tr>
+            <tr><td class="desc">Underlayment + ice &amp; water shield</td><td class="amt num">$1,850</td></tr>
+            <tr><td class="desc">Ridge vent</td><td class="amt num">$1,200</td></tr>
+            <tr><td class="desc">Permit &amp; disposal</td><td class="amt num">$1,200</td></tr>
+          </table>
+          <div class="pr-totals">
+            <div class="r total"><span>Total</span><span class="num">$18,450</span></div>
+            <div class="r"><span>Deposit due (30%)</span><span class="num">$5,535</span></div>
+          </div>
+          <div class="pr-esign">
+            <div><div class="lbl">Request e-signature</div><div class="sub">Marcus signs online to accept</div></div>
+            <button type="button" role="switch" aria-checked="true" class="cmp-switch on" data-value="true" onclick="toggleSwitch(this)"><span class="knob"></span></button>
+          </div>
+        </div>
+      </div>
+      <div class="pr-foot">
+        <button class="btn left" onclick="closeProposal()">Cancel</button>
+        <button class="btn btn-primary" onclick="prStep('send')">Continue<i data-lucide="arrow-right" class="i"></i></button>
+      </div>
+    </div>
+
+    <!-- STEP 2 · SEND -->
+    <div class="pr-step" data-step="send" hidden>
+      <div class="pr-body">
+        <div class="cmp-field"><label for="prTo">To</label><input id="prTo" value="Marcus Henderson &lt;marcus.henderson@gmail.com&gt;" readonly></div>
+        <label class="pr-cc"><input type="checkbox" id="prCC"> Cc Priya Henderson · priya.henderson@gmail.com</label>
+        <div class="cmp-field"><label for="prSubject">Subject</label><input id="prSubject" value="Your roof replacement proposal — #P-1043"></div>
+        <div class="cmp-field"><label for="prMessage">Message</label><textarea id="prMessage">Hi Marcus,
+
+Please find your roof replacement proposal (#P-1043) for $18,450. It covers a full tear-off and replacement with GAF Timberline HDZ shingles, new underlayment, ridge vent, and permit &amp; disposal.
+
+You can review and sign online — a 30% deposit ($5,535) secures your spot on the schedule. Let me know if you have any questions.
+
+Thanks,
+Sam Wells · RoofPilot</textarea></div>
+      </div>
+      <div class="pr-foot">
+        <button class="btn left" onclick="prStep('review')"><i data-lucide="arrow-left" class="i"></i>Back</button>
+        <button class="btn btn-primary" id="prSend" onclick="sendProposal()"><span id="prSendLabel">Send proposal</span></button>
+      </div>
+    </div>
+
+    <!-- STEP 3 · SENT -->
+    <div class="pr-step" data-step="sent" hidden>
+      <div class="pr-body pr-success">
+        <div class="pr-check"><i data-lucide="check-circle-2" class="i"></i></div>
+        <h3>Proposal sent to Marcus</h3>
+        <div class="psub num">Proposal #P-1043 · $18,450 · awaiting signature</div>
+        <div class="pr-signals">
+          <div class="pr-signal"><i data-lucide="file-check" class="i"></i><span>Document <b>Proposal #P-1043</b> marked <b>Sent</b></span></div>
+          <div class="pr-signal"><i data-lucide="clock" class="i"></i><span>Financial now <b>Awaiting signature</b></span></div>
+          <div class="pr-signal"><i data-lucide="activity" class="i"></i><span>Logged to <b>Activity</b> · $18,450</span></div>
+          <div class="pr-signal"><i data-lucide="arrow-right" class="i"></i><span>Suggested next stage · <b>Sold</b></span></div>
+        </div>
+      </div>
+      <div class="pr-foot">
+        <button class="btn left" onclick="copyProposalLink()"><i data-lucide="link" class="i"></i>Copy link</button>
+        <button class="btn" onclick="remindIn3()"><i data-lucide="alarm-clock" class="i"></i>Remind in 3 days</button>
+        <button class="btn btn-primary" onclick="closeProposal()">Back to job</button>
+      </div>
     </div>
   </div>
 </div>
@@ -1441,10 +1601,10 @@ h1.job-title{font-size:23px;font-weight:700;color:var(--ink);letter-spacing:-.01
     {id:'jobinfo',   label:'Job info',  pill:()=>'State Farm · Hail'},
     {id:'tasks',     label:'Tasks',     pill:()=>state.open+' open · '+state.done+' done'},
     {id:'financial', label:'Financial', pill:()=>'$18,450'},
-    {id:'documents', label:'Documents', pill:()=>'3 files'},
+    {id:'documents', label:'Documents', pill:()=>state.docs+' files'},
     {id:'activity',  label:'Activity',  pill:()=>null},
   ];
-  const state={view:'tabs', active:'contacts', contacts:1, open:2, done:1, openAcc:new Set(['contacts'])};
+  const state={view:'tabs', active:'contacts', contacts:1, open:2, done:1, docs:3, openAcc:new Set(['contacts'])};
 
   const store=document.getElementById('store');
   const tabbar=document.getElementById('tabbar');
@@ -1594,6 +1754,91 @@ h1.job-title{font-size:23px;font-weight:700;color:var(--ink);letter-spacing:-.01
     if(v && editTargetEl){ editTargetEl.childNodes[0].textContent=v+' '; }
     closeSheet();
     toast('Field updated');
+  }
+
+  /* ===== Send-proposal flow ===== */
+  const prBackdrop=document.getElementById('prBackdrop');
+  let prPending=false, proposalApplied=false;
+
+  function openProposal(){ prStep('review'); prBackdrop.classList.add('open'); lucide.createIcons(); }
+  function closeProposal(e){
+    if(e&&e.target&&e.target.closest&&e.target.closest('.pr-modal')&&e.currentTarget!==prBackdrop) return;
+    prBackdrop.classList.remove('open');
+  }
+  function prStep(name){
+    document.querySelectorAll('.pr-step').forEach(s=>s.hidden=s.dataset.step!==name);
+    const b=document.querySelector('.pr-step[data-step="'+name+'"] .pr-body'); if(b) b.scrollTop=0;
+  }
+  function sendProposal(){
+    if(prPending) return; prPending=true;
+    const btn=document.getElementById('prSend'), label=document.getElementById('prSendLabel');
+    btn.disabled=true; label.textContent='Sending…';
+    if(!btn.querySelector('.spinner')){const s=document.createElement('span');s.className='spinner';btn.insertBefore(s,label);}
+    setTimeout(()=>{
+      prPending=false;
+      const sp=btn.querySelector('.spinner'); if(sp) sp.remove();
+      label.textContent='Send proposal'; btn.disabled=false;
+      applyProposalSent();
+      prStep('sent');
+    },1300);
+  }
+  function applyProposalSent(){
+    if(proposalApplied){toast('Proposal sent to Marcus');return;} proposalApplied=true;
+    // Documents: add Proposal #P-1043 (Sent, info chip)
+    document.querySelectorAll('.doc-list').forEach(list=>{
+      const row=document.createElement('button');
+      row.className='doc-row just-added';
+      row.setAttribute('onclick',"toast('Opening Proposal #P-1043')");
+      row.innerHTML='<span class="doc-icon"><i data-lucide="file-check" class="i"></i></span>'+
+        '<span class="doc-info"><span class="doc-name">Proposal #P-1043</span><span class="doc-sub">PDF · <span class="num">Jul 30</span></span></span>'+
+        '<span class="chip-status st-sent"><i data-lucide="send" class="i"></i>Sent</span>';
+      list.prepend(row);
+    });
+    state.docs++;
+    const md=document.getElementById('mDocSummary'); if(md) md.textContent=state.docs+' files';
+    // Financial: awaiting signature
+    document.querySelectorAll('.fin').forEach(fin=>{
+      if(!fin.querySelector('.fin-status')){
+        const st=document.createElement('div');
+        st.className='fin-status';
+        st.innerHTML='<span class="chip-status st-sent"><i data-lucide="clock" class="i"></i>Awaiting signature</span>';
+        const total=fin.querySelector('.fin-total');
+        total?total.insertAdjacentElement('afterend',st):fin.prepend(st);
+      }
+      const b=fin.querySelector('.btn-primary');
+      if(b){b.disabled=true;b.classList.add('is-awaiting');b.innerHTML='<i data-lucide="clock" class="i"></i>Awaiting signature';}
+    });
+    // Activity
+    addActivity('file-check','Proposal <b>#P-1043</b> sent · <span class="num">$18,450</span>');
+    // Next-step cards (desktop + mobile)
+    updateNextStep();
+    // Pipeline suggests Sold
+    document.querySelectorAll('.stage').forEach(s=>{if(/\bSold\b/.test(s.textContent))s.classList.add('suggested');});
+    document.querySelectorAll('.m-chip').forEach(c=>{if(/\bSold\b/.test(c.textContent))c.classList.add('suggested');});
+    refreshPills(); lucide.createIcons();
+    toast('Proposal sent to Marcus');
+  }
+  function updateNextStep(){
+    const html=
+      '<div class="eyebrow"><i data-lucide="zap" class="i"></i>Recommended next step</div>'+
+      '<h3 style="font-family:\'Inter Tight\';font-size:16px;font-weight:600;color:var(--ink);margin:9px 0 8px;">Move this job to Sold</h3>'+
+      '<div class="sub" style="display:flex;align-items:center;gap:7px;color:var(--body);font-size:12.5px;margin-bottom:14px;">'+
+        '<i data-lucide="clock" class="i" style="width:15px;height:15px;color:var(--info);flex:0 0 auto;"></i>Proposal #P-1043 sent · awaiting signature</div>'+
+      '<button class="btn-accent" onclick="toast(\'Job marked as Sold\')"><i data-lucide="arrow-right" class="i"></i>Mark as Sold</button>';
+    const d=document.querySelector('.nextstep'); if(d) d.innerHTML=html;
+    const m=document.querySelector('.m-nextstep'); if(m) m.innerHTML=html;
+    lucide.createIcons();
+  }
+  function copyProposalLink(){
+    const url='https://app.roofpilot.com/p/P-1043';
+    try{navigator.clipboard&&navigator.clipboard.writeText(url);}catch(e){}
+    toast('Proposal link copied');
+  }
+  function remindIn3(){
+    addTaskRows({title:'Follow up on proposal signature',due:'2026-08-02',priority:'Medium'});
+    addActivity('check-square','Task created — <b>Follow up on proposal signature</b>');
+    state.open++; updateTaskCounts();
+    toast('Reminder set · task due Aug 2');
   }
 
   /* init */
