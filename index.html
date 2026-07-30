@@ -364,6 +364,176 @@ h1.job-title{font-size:23px;font-weight:700;color:var(--ink);letter-spacing:-.01
 }
 .toast.show{opacity:1;transform:translateY(0);}
 .toast .i{width:16px;height:16px;color:var(--success);}
+
+/* ============================================================
+   MOBILE LAYOUT (≤640px)
+   ============================================================ */
+.mobile{display:none;}
+.sheet-backdrop{display:none;}
+
+@media (max-width:640px){
+  .app{display:none;}
+  .toast-wrap{bottom:calc(84px + env(safe-area-inset-bottom));}
+
+  .mobile{
+    display:flex;flex-direction:column;min-height:100vh;background:var(--canvas);
+  }
+
+  /* Sticky header */
+  .m-header{
+    position:sticky;top:0;z-index:30;background:var(--surface);
+    border-bottom:1px solid var(--line);
+    padding:calc(12px + env(safe-area-inset-top)) 14px 12px;
+    display:flex;align-items:flex-start;gap:10px;
+  }
+  .m-back{
+    width:36px;height:36px;flex:0 0 auto;border-radius:9px;
+    display:flex;align-items:center;justify-content:center;color:var(--body);
+    border:1px solid var(--line);background:var(--surface);margin-top:1px;
+  }
+  .m-back .i{width:20px;height:20px;}
+  .m-htitle{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .m-htitle h1{font-family:'Inter Tight';font-size:17px;font-weight:700;color:var(--ink);letter-spacing:-.01em;}
+  .m-hsub{color:var(--muted);font-size:12.5px;margin-top:3px;}
+  .m-hsub b{color:var(--body);font-weight:600;}
+
+  /* Body scroll region */
+  .m-body{flex:1;padding:14px 14px calc(96px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:14px;}
+
+  /* Stage chips */
+  .m-chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 4px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+  .m-chips::-webkit-scrollbar{display:none;}
+  .m-chip{
+    display:inline-flex;align-items:center;gap:6px;flex:0 0 auto;
+    padding:8px 13px;border-radius:999px;font-size:12.5px;font-weight:600;
+    background:var(--surface);border:1px solid var(--line);color:var(--slate);white-space:nowrap;
+  }
+  .m-chip .i{width:15px;height:15px;}
+  .m-chip .node{width:18px;height:18px;border-radius:6px;display:flex;align-items:center;justify-content:center;}
+  .m-chip.done{color:var(--body);}
+  .m-chip.done .node{background:var(--success);color:#fff;}
+  .m-chip.done .node .i{width:12px;height:12px;}
+  .m-chip.current{border-color:var(--primary);color:var(--primary);background:var(--primary-tint);}
+  .m-chip.current .node{background:var(--primary);color:#fff;}
+  .m-chip.current .node .i{width:12px;height:12px;}
+  .m-chip.future .node{border:2px solid var(--slate);color:var(--slate);}
+
+  /* Card base for mobile */
+  .m-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);}
+
+  /* Next step */
+  .m-nextstep{background:var(--accent-tint);border:1px solid #FFD9CC;border-radius:var(--r-card);padding:16px;}
+
+  /* Property */
+  .m-prop{overflow:hidden;}
+  .m-roofphoto{height:150px;position:relative;background:repeating-linear-gradient(45deg,#EEF2F7 0 10px,#F6F8FB 10px 20px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;}
+  .m-roofphoto .i{width:30px;height:30px;color:var(--slate);}
+  .m-roofphoto .cap{font-size:12px;font-weight:500;color:var(--muted);}
+  .m-prop-foot{display:flex;align-items:flex-start;gap:11px;padding:14px 16px;}
+  .m-prop-foot .pin{color:var(--primary);margin-top:1px;}
+  .m-prop-foot .pin .i{width:18px;height:18px;}
+  .m-prop-foot .lbl{font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--muted);text-transform:uppercase;}
+  .m-prop-foot .addr{font-size:13.5px;font-weight:500;color:var(--body);margin-top:3px;}
+
+  /* Primary contact card */
+  .m-contact{padding:16px;}
+  .m-contact-top{display:flex;align-items:center;gap:13px;}
+  .m-contact-top .contact-info{flex:1;}
+  .m-contact-btns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:14px;}
+  .m-cbtn{
+    display:flex;align-items:center;justify-content:center;gap:7px;min-height:44px;
+    border:1px solid var(--line);border-radius:var(--r-control);background:var(--surface);
+    font-weight:600;font-size:13px;color:var(--body);
+  }
+  .m-cbtn .i{width:16px;height:16px;color:var(--primary);}
+  .m-cbtn:active{background:var(--primary-tint);}
+
+  /* Mobile accordions */
+  .m-acc{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);overflow:hidden;}
+  .m-acc-head{display:flex;align-items:center;gap:12px;width:100%;padding:15px 16px;text-align:left;}
+  .m-acc-ic{width:34px;height:34px;flex:0 0 auto;border-radius:9px;background:var(--canvas);display:flex;align-items:center;justify-content:center;color:var(--muted);}
+  .m-acc-ic .i{width:17px;height:17px;}
+  .m-acc-tt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;}
+  .m-acc-tt .t{font-family:'Inter Tight';font-size:14.5px;font-weight:600;color:var(--ink);}
+  .m-acc-tt .s{font-size:12px;color:var(--muted);margin-top:2px;}
+  .m-acc-chev{width:18px;height:18px;color:var(--muted);transition:transform .18s;flex:0 0 auto;}
+  .m-acc.open .m-acc-chev{transform:rotate(180deg);}
+  .m-acc-body{padding:0 16px 16px;border-top:1px solid var(--line);}
+  .m-acc:not(.open) .m-acc-body{display:none;}
+  .m-acc-body>*:first-child{padding-top:16px;}
+
+  /* Editable field rows (open sheet) */
+  .m-field{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid var(--line);width:100%;text-align:left;}
+  .m-field:first-child{border-top:none;}
+  .m-field .fl{font-size:12px;font-weight:600;color:var(--muted);}
+  .m-field .fr{display:flex;align-items:center;gap:8px;color:var(--body);font-size:13.5px;font-weight:500;max-width:62%;text-align:right;}
+  .m-field .fr .i{width:15px;height:15px;color:var(--slate);flex:0 0 auto;}
+  .m-group-label{font-size:11px;font-weight:700;letter-spacing:.05em;color:var(--muted);text-transform:uppercase;padding:16px 0 4px;display:flex;align-items:center;gap:7px;}
+  .m-group-label:first-child{padding-top:16px;}
+  .m-group-label .i{width:14px;height:14px;}
+
+  /* Sticky bottom bar + FAB */
+  .m-bottombar{
+    position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--surface);
+    border-top:1px solid var(--line);box-shadow:var(--shadow-bar);
+    padding:8px 8px calc(8px + env(safe-area-inset-bottom));
+    display:flex;align-items:flex-end;justify-content:space-around;
+  }
+  .m-act{
+    display:flex;flex-direction:column;align-items:center;gap:3px;
+    min-width:56px;min-height:44px;justify-content:center;color:var(--muted);font-size:11px;font-weight:600;
+  }
+  .m-act .i{width:20px;height:20px;}
+  .m-act:active{color:var(--primary);}
+  .m-fab{
+    width:56px;height:56px;border-radius:50%;background:var(--primary);color:#fff;
+    display:flex;align-items:center;justify-content:center;margin-top:-22px;
+    box-shadow:0 8px 20px rgba(79,70,229,.4);flex:0 0 auto;
+  }
+  .m-fab .i{width:26px;height:26px;}
+  .m-fab:active{background:var(--primary-hover);}
+
+  /* Bottom sheet */
+  .sheet-backdrop{
+    display:block;position:fixed;inset:0;z-index:60;background:rgba(11,18,32,.4);
+    opacity:0;pointer-events:none;transition:opacity .22s;
+  }
+  .sheet-backdrop.open{opacity:1;pointer-events:auto;}
+  .sheet{
+    position:absolute;left:0;right:0;bottom:0;background:var(--surface);
+    border-radius:var(--r-sheet) var(--r-sheet) 0 0;box-shadow:var(--shadow-sheet);
+    padding:8px 18px calc(22px + env(safe-area-inset-bottom));
+    transform:translateY(100%);transition:transform .26s cubic-bezier(.32,.72,0,1);max-height:86vh;overflow-y:auto;
+  }
+  .sheet-backdrop.open .sheet{transform:translateY(0);}
+  .sheet-handle{width:40px;height:4px;border-radius:999px;background:var(--line);margin:6px auto 12px;}
+  .sheet-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+  .sheet-head h3{font-family:'Inter Tight';font-size:17px;font-weight:600;color:var(--ink);}
+  .sheet-close{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--muted);border:1px solid var(--line);}
+  .sheet-close .i{width:16px;height:16px;}
+  .sheet-field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
+  .sheet-field label{font-size:12px;font-weight:600;color:var(--muted);}
+  .sheet-field input{font:inherit;font-size:15px;color:var(--ink);border:1px solid var(--line);border-radius:var(--r-control);padding:12px 13px;outline:none;}
+  .sheet-field input:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-tint);}
+  .sheet .btn-primary{width:100%;justify-content:center;padding:13px;font-size:14px;}
+
+  /* Full stepper (in sheet) */
+  .stepper{display:flex;flex-direction:column;}
+  .step{display:flex;gap:13px;position:relative;padding-bottom:20px;}
+  .step:last-child{padding-bottom:0;}
+  .step::before{content:"";position:absolute;left:16px;top:34px;bottom:0;width:2px;background:var(--line);}
+  .step:last-child::before{display:none;}
+  .step.done::before{background:var(--success);}
+  .step-node{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;border:2px solid var(--slate);color:var(--slate);background:var(--surface);flex:0 0 auto;z-index:1;}
+  .step-node .i{width:17px;height:17px;}
+  .step.done .step-node{background:var(--success);border-color:var(--success);color:#fff;}
+  .step.current .step-node{background:var(--primary);border-color:var(--primary);color:#fff;}
+  .step-info{padding-top:5px;}
+  .step-info .sn{font-weight:600;font-size:14px;color:var(--ink);}
+  .step.future .step-info .sn{color:var(--slate);}
+  .step-info .sd{font-size:12px;color:var(--muted);margin-top:1px;}
+  .step.current .step-info .sn{color:var(--primary);}
+}
 </style>
 </head>
 <body>
@@ -481,6 +651,234 @@ h1.job-title{font-size:23px;font-weight:700;color:var(--ink);letter-spacing:-.01
       </div>
 
     </div>
+  </div>
+</div>
+
+<!-- ============================ MOBILE ============================ -->
+<div class="mobile">
+
+  <!-- Sticky header -->
+  <header class="m-header">
+    <button class="m-back" onclick="toast('Back to Jobs')"><i data-lucide="chevron-left" class="i"></i></button>
+    <div>
+      <div class="m-htitle">
+        <h1>Henderson Residence</h1>
+        <span class="chip num">#10428</span>
+      </div>
+      <div class="m-hsub">Roof Replacement · <b>Marcus Henderson</b></div>
+    </div>
+  </header>
+
+  <div class="m-body">
+
+    <!-- Stage chips -->
+    <div class="m-chips" onclick="openStepper()">
+      <div class="m-chip done"><span class="node"><i data-lucide="check" class="i"></i></span>Lead</div>
+      <div class="m-chip current"><span class="node"><i data-lucide="square-pen" class="i"></i></span>Estimating</div>
+      <div class="m-chip future"><span class="node"></span>Sold</div>
+      <div class="m-chip future"><span class="node"></span>In Production</div>
+      <div class="m-chip future"><span class="node"></span>Accounts Rec.</div>
+      <div class="m-chip future"><span class="node"></span>Completed</div>
+    </div>
+
+    <!-- Recommended next step -->
+    <div class="m-nextstep">
+      <div class="eyebrow"><i data-lucide="zap" class="i"></i>Recommended next step</div>
+      <h3 style="font-family:'Inter Tight';font-size:16px;font-weight:600;color:var(--ink);margin:9px 0 8px;">Send the estimate to Marcus</h3>
+      <div class="sub" style="display:flex;align-items:center;gap:7px;color:var(--body);font-size:12.5px;margin-bottom:14px;">
+        <i data-lucide="check-circle-2" class="i" style="width:15px;height:15px;color:var(--success);flex:0 0 auto;"></i>Inspection done Jul 22 · estimate ready
+      </div>
+      <button class="btn-accent" onclick="toast('Proposal sent to Marcus')"><i data-lucide="play" class="i"></i>Send proposal</button>
+    </div>
+
+    <!-- Property -->
+    <div class="m-card m-prop">
+      <div class="m-roofphoto">
+        <i data-lucide="home" class="i"></i>
+        <span class="cap">roof photo</span>
+      </div>
+      <div class="m-prop-foot">
+        <span class="pin"><i data-lucide="map-pin" class="i"></i></span>
+        <div>
+          <div class="lbl">Property</div>
+          <div class="addr">1234 Texas Avenue, Shreveport, LA 71101</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Primary contact -->
+    <div class="m-card m-contact">
+      <div class="m-contact-top">
+        <div class="avatar">MH</div>
+        <div class="contact-info">
+          <div class="contact-name">Marcus Henderson <span class="badge badge-primary">Primary</span></div>
+          <div class="contact-sub">Homeowner · <span class="num">(318) 555-0142</span></div>
+        </div>
+      </div>
+      <div class="m-contact-btns">
+        <button class="m-cbtn" onclick="toast('Calling Marcus Henderson')"><i data-lucide="phone" class="i"></i>Call</button>
+        <button class="m-cbtn" onclick="toast('Texting Marcus Henderson')"><i data-lucide="message-square" class="i"></i>Text</button>
+        <button class="m-cbtn" onclick="toast('Emailing Marcus Henderson')"><i data-lucide="mail" class="i"></i>Email</button>
+      </div>
+    </div>
+
+    <!-- Accordions -->
+    <div class="m-acc" data-macc>
+      <button class="m-acc-head" onclick="toggleM(this)">
+        <span class="m-acc-ic"><i data-lucide="users" class="i"></i></span>
+        <span class="m-acc-tt"><span class="t">Contacts</span><span class="s">2 contacts</span></span>
+        <i data-lucide="chevron-down" class="i m-acc-chev"></i>
+      </button>
+      <div class="m-acc-body">
+        <div class="contact-list">
+          <div class="contact-row">
+            <div class="avatar">MH</div>
+            <div class="contact-info">
+              <div class="contact-name">Marcus Henderson <span class="badge badge-primary">Primary</span></div>
+              <div class="contact-sub">Homeowner · <span class="num">(318) 555-0142</span></div>
+            </div>
+          </div>
+          <div class="contact-row">
+            <div class="avatar">PH</div>
+            <div class="contact-info">
+              <div class="contact-name">Priya Henderson <span class="badge badge-secondary">Secondary</span></div>
+              <div class="contact-sub">Spouse · <span class="num">(318) 555-0187</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="m-acc" data-macc>
+      <button class="m-acc-head" onclick="toggleM(this)">
+        <span class="m-acc-ic"><i data-lucide="shield" class="i"></i></span>
+        <span class="m-acc-tt"><span class="t">Job info</span><span class="s">State Farm · Hail</span></span>
+        <i data-lucide="chevron-down" class="i m-acc-chev"></i>
+      </button>
+      <div class="m-acc-body">
+        <div class="m-group-label"><i data-lucide="shield" class="i"></i>Insurance &amp; claim</div>
+        <button class="m-field" onclick="editField('Carrier',this)"><span class="fl">Carrier</span><span class="fr">State Farm <i data-lucide="chevron-right" class="i"></i></span></button>
+        <button class="m-field" onclick="editField('Claim #',this)"><span class="fl">Claim #</span><span class="fr num">SF-2026-0098431 <i data-lucide="chevron-right" class="i"></i></span></button>
+        <button class="m-field" onclick="editField('Policy #',this)"><span class="fl">Policy #</span><span class="fr num">HO-55823901 <i data-lucide="chevron-right" class="i"></i></span></button>
+        <button class="m-field" onclick="editField('Date of loss',this)"><span class="fl">Date of loss</span><span class="fr num">05/14/2026 <i data-lucide="chevron-right" class="i"></i></span></button>
+        <button class="m-field" onclick="editField('Damage type',this)"><span class="fl">Damage type</span><span class="fr">Hail <i data-lucide="chevron-right" class="i"></i></span></button>
+        <div class="m-group-label"><i data-lucide="home" class="i"></i>Roof</div>
+        <button class="m-field" onclick="editField('Material',this)"><span class="fl">Material</span><span class="fr">Architectural asphalt shingle <i data-lucide="chevron-right" class="i"></i></span></button>
+        <button class="m-field" onclick="editField('Age',this)"><span class="fl">Age</span><span class="fr">14 yrs <i data-lucide="chevron-right" class="i"></i></span></button>
+        <button class="m-field" onclick="editField('Last inspection',this)"><span class="fl">Last inspection</span><span class="fr num">07/22/2026 <i data-lucide="chevron-right" class="i"></i></span></button>
+        <div class="m-group-label"><i data-lucide="key-round" class="i"></i>Access</div>
+        <button class="m-field" onclick="editField('Gated',this)"><span class="fl">Gated</span><span class="fr">No <i data-lucide="chevron-right" class="i"></i></span></button>
+        <button class="m-field" onclick="editField('Gate code',this)"><span class="fl">Gate code</span><span class="fr">— <i data-lucide="chevron-right" class="i"></i></span></button>
+        <div class="m-group-label"><i data-lucide="clipboard-list" class="i"></i>Details</div>
+        <button class="m-field" onclick="editField('Type',this)"><span class="fl">Type</span><span class="fr">Retail <i data-lucide="chevron-right" class="i"></i></span></button>
+        <button class="m-field" onclick="editField('Lead source',this)"><span class="fl">Lead source</span><span class="fr">Referral <i data-lucide="chevron-right" class="i"></i></span></button>
+        <button class="m-field" onclick="editField('Sales rep',this)"><span class="fl">Sales rep</span><span class="fr">Sam Wells <i data-lucide="chevron-right" class="i"></i></span></button>
+      </div>
+    </div>
+
+    <div class="m-acc" data-macc>
+      <button class="m-acc-head" onclick="toggleM(this)">
+        <span class="m-acc-ic"><i data-lucide="check-square" class="i"></i></span>
+        <span class="m-acc-tt"><span class="t">Tasks</span><span class="s">2 open · 1 done</span></span>
+        <i data-lucide="chevron-down" class="i m-acc-chev"></i>
+      </button>
+      <div class="m-acc-body">
+        <div class="task-list">
+          <div class="task">
+            <input type="checkbox" class="task-check">
+            <div class="task-main"><div class="task-title">Follow up on estimate</div><div class="task-meta"><span class="mini-avatar">SW</span><span class="num">Due Jul 31</span></div></div>
+            <span class="chip-pri pri-high"><i data-lucide="chevrons-up" class="i"></i>High</span>
+          </div>
+          <div class="task">
+            <input type="checkbox" class="task-check">
+            <div class="task-main"><div class="task-title">Order materials from ABC Supply</div><div class="task-meta"><span class="mini-avatar">SW</span><span class="num">Due Aug 5</span></div></div>
+            <span class="chip-pri pri-medium"><i data-lucide="equal" class="i"></i>Med</span>
+          </div>
+          <div class="task done">
+            <input type="checkbox" class="task-check" checked>
+            <div class="task-main"><div class="task-title">Complete inspection</div><div class="task-meta"><span class="mini-avatar">SW</span><span class="num">Jul 22</span></div></div>
+            <span class="chip-pri pri-done"><i data-lucide="check" class="i"></i>Done</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="m-acc" data-macc>
+      <button class="m-acc-head" onclick="toggleM(this)">
+        <span class="m-acc-ic"><i data-lucide="dollar-sign" class="i"></i></span>
+        <span class="m-acc-tt"><span class="t">Financial</span><span class="s">$18,450 estimate</span></span>
+        <i data-lucide="chevron-down" class="i m-acc-chev"></i>
+      </button>
+      <div class="m-acc-body">
+        <div class="fin">
+          <div class="fin-total"><span class="lbl">Estimate total</span><span class="amt num">$18,450</span></div>
+          <div class="fin-row"><span class="k">Deposit (30%)</span><span class="v num">$5,535</span></div>
+          <div class="fin-row"><span class="k">Balance due</span><span class="v num">$12,915</span></div>
+          <button class="btn btn-primary" onclick="toast('Proposal sent to Marcus')"><i data-lucide="send" class="i"></i>Send proposal</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="m-acc" data-macc>
+      <button class="m-acc-head" onclick="toggleM(this)">
+        <span class="m-acc-ic"><i data-lucide="folder" class="i"></i></span>
+        <span class="m-acc-tt"><span class="t">Documents</span><span class="s">3 files</span></span>
+        <i data-lucide="chevron-down" class="i m-acc-chev"></i>
+      </button>
+      <div class="m-acc-body">
+        <div class="doc-list">
+          <button class="doc-row" onclick="toast('Opening Estimate #E-2211')">
+            <span class="doc-icon"><i data-lucide="file-text" class="i"></i></span>
+            <span class="doc-info"><span class="doc-name">Estimate #E-2211</span><span class="doc-sub">PDF · <span class="num">Jul 24</span></span></span>
+            <span class="chip-status st-draft"><i data-lucide="pencil" class="i"></i>Draft</span>
+          </button>
+          <button class="doc-row" onclick="toast('Opening Inspection photos')">
+            <span class="doc-icon"><i data-lucide="image" class="i"></i></span>
+            <span class="doc-info"><span class="doc-name">Inspection photos</span><span class="doc-sub">6 images · <span class="num">Jul 22</span></span></span>
+          </button>
+          <button class="doc-row" onclick="toast('Opening Measurement report')">
+            <span class="doc-icon"><i data-lucide="ruler" class="i"></i></span>
+            <span class="doc-info"><span class="doc-name">Measurement report</span><span class="doc-sub">PDF · <span class="num">Jul 20</span></span></span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="m-acc" data-macc>
+      <button class="m-acc-head" onclick="toggleM(this)">
+        <span class="m-acc-ic"><i data-lucide="activity" class="i"></i></span>
+        <span class="m-acc-tt"><span class="t">Activity</span><span class="s">5 recent events</span></span>
+        <i data-lucide="chevron-down" class="i m-acc-chev"></i>
+      </button>
+      <div class="m-acc-body">
+        <div class="timeline">
+          <div class="tl-item"><span class="tl-dot"><i data-lucide="file-text" class="i"></i></span><div class="tl-body"><div class="tl-text">Created <b>Estimate #E-2211</b> <span class="num">($18,450)</span></div><div class="tl-date num">Jul 24, 2026</div></div></div>
+          <div class="tl-item"><span class="tl-dot"><i data-lucide="camera" class="i"></i></span><div class="tl-body"><div class="tl-text">Inspection completed · <b>6 photos</b></div><div class="tl-date num">Jul 22, 2026</div></div></div>
+          <div class="tl-item"><span class="tl-dot"><i data-lucide="mail" class="i"></i></span><div class="tl-body"><div class="tl-text">Email — <b>"Inspection appointment confirmed"</b></div><div class="tl-date num">Jul 18, 2026</div></div></div>
+          <div class="tl-item"><span class="tl-dot"><i data-lucide="sticky-note" class="i"></i></span><div class="tl-body"><div class="tl-text">Note — <b>"Neighbor referral, hail damage on north slope"</b></div><div class="tl-date num">Jul 16, 2026</div></div></div>
+          <div class="tl-item"><span class="tl-dot"><i data-lucide="git-branch" class="i"></i></span><div class="tl-body"><div class="tl-text">Stage <b>Lead → Estimating</b></div><div class="tl-date num">Jul 15, 2026</div></div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Sticky bottom action bar -->
+  <nav class="m-bottombar">
+    <button class="m-act" onclick="toast('Note added')"><i data-lucide="sticky-note" class="i"></i>Note</button>
+    <button class="m-act" onclick="toast('Task created')"><i data-lucide="check-square" class="i"></i>Task</button>
+    <button class="m-fab" onclick="toast('Create menu')"><i data-lucide="plus" class="i"></i></button>
+    <button class="m-act" onclick="toast('Email drafted')"><i data-lucide="mail" class="i"></i>Email</button>
+    <button class="m-act" onclick="toast('Message sent')"><i data-lucide="message-square" class="i"></i>Message</button>
+  </nav>
+</div>
+
+<!-- Bottom sheet (stepper + field edits) -->
+<div class="sheet-backdrop" id="sheetBackdrop" onclick="closeSheet(event)">
+  <div class="sheet" id="sheet" onclick="event.stopPropagation()">
+    <div class="sheet-handle"></div>
+    <div class="sheet-head"><h3 id="sheetTitle">Title</h3><button class="sheet-close" onclick="closeSheet()"><i data-lucide="x" class="i"></i></button></div>
+    <div id="sheetBody"></div>
   </div>
 </div>
 
@@ -807,6 +1205,54 @@ h1.job-title{font-size:23px;font-weight:700;color:var(--ink);letter-spacing:-.01
     list.appendChild(row);
     state.contacts=2; refreshPills(); lucide.createIcons();
     toast('Priya Henderson added');
+  }
+
+  /* ===== Mobile ===== */
+  function toggleM(head){ head.closest('.m-acc').classList.toggle('open'); }
+
+  const sheetBackdrop=document.getElementById('sheetBackdrop');
+  function openSheet(title, html){
+    document.getElementById('sheetTitle').textContent=title;
+    document.getElementById('sheetBody').innerHTML=html;
+    sheetBackdrop.classList.add('open');
+    lucide.createIcons();
+  }
+  function closeSheet(e){
+    if(e && e.target && e.target.closest && e.target.closest('.sheet') && e.type==='click' && e.currentTarget!==sheetBackdrop) return;
+    sheetBackdrop.classList.remove('open');
+  }
+
+  const STEPS=[
+    {n:'Lead',d:'Created Jul 15',s:'done',ic:'check'},
+    {n:'Estimating',d:'In progress · estimate ready',s:'current',ic:'square-pen'},
+    {n:'Sold',d:'Not started',s:'future',ic:'handshake'},
+    {n:'In Production',d:'Not started',s:'future',ic:'hammer'},
+    {n:'Accounts Rec.',d:'Not started',s:'future',ic:'dollar-sign'},
+    {n:'Completed',d:'Not started',s:'future',ic:'flag'},
+  ];
+  function openStepper(){
+    const html='<div class="stepper">'+STEPS.map(s=>
+      '<div class="step '+s.s+'"><span class="step-node"><i data-lucide="'+s.ic+'" class="i"></i></span>'+
+      '<div class="step-info"><div class="sn">'+s.n+'</div><div class="sd">'+s.d+'</div></div></div>'
+    ).join('')+'</div>';
+    openSheet('Job stage', html);
+  }
+
+  let editTargetEl=null;
+  function editField(label, btn){
+    editTargetEl=btn.querySelector('.fr');
+    const cur=editTargetEl.childNodes[0].textContent.trim();
+    openSheet('Edit '+label,
+      '<div class="sheet-field"><label>'+label+'</label>'+
+      '<input id="sheetInput" value="'+cur.replace(/"/g,'&quot;')+'"></div>'+
+      '<button class="btn btn-primary" onclick="saveField()"><i data-lucide="check" class="i"></i>Save</button>');
+    setTimeout(()=>{const i=document.getElementById('sheetInput');if(i){i.focus();}},260);
+  }
+  function saveField(){
+    const v=document.getElementById('sheetInput').value.trim();
+    if(v && editTargetEl){ editTargetEl.childNodes[0].textContent=v+' '; }
+    closeSheet();
+    toast('Field updated');
   }
 
   /* init */
