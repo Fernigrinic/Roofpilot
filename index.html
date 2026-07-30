@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RoofPilot — Henderson Residence · Job #10428</title>
+
+<!-- Fonts: Inter + Inter Tight -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@500;600;700&display=swap" rel="stylesheet">
+
+<!-- Icons: Lucide -->
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+<style>
+/* ============================================================
+   COLOR TOKENS — each color has one job
+   ============================================================ */
+:root{
+  --canvas:#F6F8FB; --surface:#FFFFFF; --line:#E6EAF0;
+  --muted:#64748B; --body:#2B3546; --ink:#0B1220;
+  --primary:#4F46E5; --primary-hover:#4338CA; --primary-tint:#EEF0FF;
+  --accent:#FF5A36; --accent-tint:#FFF1EC; --accent-ink:#C23A16;
+  --success:#16A34A; --success-tint:#E9F9EF;
+  --warning:#D97706; --warning-tint:#FFF6E8;
+  --danger:#E11D48;  --danger-tint:#FFE9EE;
+  --info:#0EA5E9;    --info-tint:#E8F6FE;
+  --slate:#94A3B8;
+
+  --r-control:10px; --r-card:14px; --r-sheet:18px;
+  --shadow-sheet:0 12px 32px rgba(11,18,32,.14), 0 2px 8px rgba(11,18,32,.06);
+  --shadow-bar:0 -6px 20px rgba(11,18,32,.10);
+}
+
+/* ============================================================
+   RESET / BASE
+   ============================================================ */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  color:var(--body);
+  background:var(--canvas);
+  font-size:14px; line-height:1.45;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4,.tight{font-family:'Inter Tight','Inter',sans-serif;}
+.num{font-variant-numeric:tabular-nums;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+ul{list-style:none;}
+.i{width:16px;height:16px;stroke-width:2;display:inline-block;vertical-align:middle;}
+
+/* ============================================================
+   APP SHELL — nav rail + browser frame
+   ============================================================ */
+.app{display:flex;min-height:100vh;}
+
+/* Left nav rail */
+.rail{
+  width:212px;flex:0 0 212px;background:var(--surface);
+  border-right:1px solid var(--line);
+  display:flex;flex-direction:column;padding:16px 12px;gap:4px;
+  position:sticky;top:0;height:100vh;
+}
+.logo{
+  width:36px;height:36px;border-radius:10px;background:var(--primary);
+  display:flex;align-items:center;justify-content:center;color:#fff;
+  margin:2px 6px 14px;
+}
+.logo .i{width:20px;height:20px;stroke-width:2.4;}
+.nav-item{
+  display:flex;align-items:center;gap:11px;
+  padding:9px 12px;border-radius:10px;color:var(--muted);
+  font-weight:500;font-size:13.5px;text-decoration:none;
+  transition:background .12s,color .12s;
+}
+.nav-item .i{width:18px;height:18px;color:var(--muted);}
+.nav-item:hover{background:var(--canvas);color:var(--body);}
+.nav-item.active{background:var(--primary-tint);color:var(--primary);font-weight:600;}
+.nav-item.active .i{color:var(--primary);}
+
+/* Right side: browser chrome + viewport */
+.frame{flex:1;display:flex;flex-direction:column;min-width:0;}
+.chrome{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 16px;background:#EDF1F6;border-bottom:1px solid var(--line);
+}
+.dots{display:flex;gap:7px;}
+.dot{width:12px;height:12px;border-radius:50%;}
+.dot.r{background:#FF5F57;}.dot.y{background:#FEBC2E;}.dot.g{background:#28C840;}
+.urlbar{
+  flex:1;display:flex;align-items:center;gap:8px;
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:8px;padding:6px 12px;color:var(--muted);font-size:12.5px;max-width:520px;
+}
+.urlbar .i{width:14px;height:14px;color:var(--muted);}
+.chrome .refresh{color:var(--muted);display:flex;}
+.chrome .refresh .i{width:16px;height:16px;}
+
+/* Scroll viewport that holds the page */
+.viewport{flex:1;overflow-y:auto;}
+
+/* ============================================================
+   TOP BAR (sticky)
+   ============================================================ */
+.topbar{
+  position:sticky;top:0;z-index:20;
+  background:var(--surface);border-bottom:1px solid var(--line);
+  padding:16px 28px 18px;
+}
+.crumb{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:12.5px;margin-bottom:10px;}
+.crumb .i{width:13px;height:13px;}
+.crumb b{color:var(--body);font-weight:600;}
+.topbar-row{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+h1.job-title{font-size:23px;font-weight:700;color:var(--ink);letter-spacing:-.01em;line-height:1.2;}
+.title-meta{display:flex;align-items:center;gap:12px;margin-top:9px;flex-wrap:wrap;}
+.chip{
+  display:inline-flex;align-items:center;gap:5px;
+  background:var(--primary-tint);color:var(--primary);
+  font-weight:600;font-size:12.5px;padding:3px 9px;border-radius:999px;
+}
+.contact-line{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:13px;}
+.contact-line .i{width:15px;height:15px;}
+.contact-line b{color:var(--body);font-weight:600;}
+
+/* Action bar */
+.actions{display:flex;align-items:center;gap:8px;}
+.btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 13px;border-radius:var(--r-control);font-weight:600;font-size:13px;
+  border:1px solid var(--line);background:var(--surface);color:var(--body);
+  transition:background .12s,border-color .12s,box-shadow .12s;
+}
+.btn .i{width:15px;height:15px;}
+.btn:hover{background:var(--canvas);border-color:#D3D9E3;}
+.btn-primary{background:var(--primary);border-color:var(--primary);color:#fff;}
+.btn-primary:hover{background:var(--primary-hover);border-color:var(--primary-hover);}
+.split{display:inline-flex;align-items:stretch;border-radius:var(--r-control);overflow:hidden;}
+.split .btn-primary{border-radius:0;}
+.split .split-main{border-top-left-radius:var(--r-control);border-bottom-left-radius:var(--r-control);}
+.split .split-caret{border-top-right-radius:var(--r-control);border-bottom-right-radius:var(--r-control);padding:8px 9px;border-left:1px solid rgba(255,255,255,.28);}
+.btn-icon{padding:8px 10px;}
+.btn-icon .i{width:17px;height:17px;}
+
+/* ============================================================
+   PIPELINE
+   ============================================================ */
+.pipeline{
+  display:flex;align-items:flex-start;padding:16px 28px;
+  background:var(--surface);border-bottom:1px solid var(--line);
+  gap:0;overflow-x:auto;
+}
+.stage{display:flex;flex-direction:column;align-items:center;gap:7px;min-width:74px;flex:0 0 auto;}
+.stage-node{
+  width:30px;height:30px;border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+  border:2px solid var(--slate);color:var(--slate);background:var(--surface);
+}
+.stage-node .i{width:16px;height:16px;}
+.stage.done .stage-node{background:var(--success);border-color:var(--success);color:#fff;}
+.stage.current .stage-node{background:var(--primary);border-color:var(--primary);color:#fff;}
+.stage-label{font-size:12px;font-weight:500;color:var(--slate);white-space:nowrap;}
+.stage.done .stage-label{color:var(--body);}
+.stage.current .stage-label{color:var(--primary);font-weight:600;}
+.connector{flex:1 1 auto;height:2px;background:var(--slate);margin-top:14px;min-width:20px;}
+.connector.done{background:var(--success);}
+
+/* ============================================================
+   CONTENT GRID
+   ============================================================ */
+.content{
+  display:grid;grid-template-columns:340px minmax(0,1fr);
+  gap:22px;padding:24px 28px 60px;align-items:start;
+  max-width:1360px;
+}
+.left-col{display:flex;flex-direction:column;gap:18px;position:sticky;top:112px;}
+
+/* Card base */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);}
+
+/* Recommended next-step card */
+.nextstep{
+  background:var(--accent-tint);border:1px solid #FFD9CC;border-radius:var(--r-card);
+  padding:18px;
+}
+.eyebrow{display:flex;align-items:center;gap:7px;color:var(--accent-ink);font-weight:700;font-size:11px;letter-spacing:.07em;text-transform:uppercase;}
+.eyebrow .i{width:15px;height:15px;color:var(--accent);}
+.nextstep h3{font-family:'Inter Tight';font-size:17px;font-weight:600;color:var(--ink);margin:9px 0 8px;}
+.nextstep .sub{display:flex;align-items:center;gap:7px;color:var(--body);font-size:12.5px;margin-bottom:14px;}
+.nextstep .sub .i{width:15px;height:15px;color:var(--success);flex:0 0 auto;}
+.btn-accent{
+  width:100%;justify-content:center;background:var(--accent);color:#fff;border:none;
+  padding:11px;border-radius:var(--r-control);font-weight:600;font-size:13.5px;
+  display:inline-flex;align-items:center;gap:7px;transition:background .12s;
+}
+.btn-accent:hover{background:var(--accent-ink);}
+.btn-accent .i{width:16px;height:16px;}
+
+/* Property card */
+.propcard{overflow:hidden;}
+.roofphoto{
+  height:150px;position:relative;
+  background:
+    repeating-linear-gradient(45deg,#EEF2F7 0 10px,#F6F8FB 10px 20px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--slate);
+}
+.roofphoto .i{width:30px;height:30px;color:var(--slate);}
+.roofphoto .cap{font-size:12px;font-weight:500;color:var(--muted);}
+.prop-footer{display:flex;align-items:flex-start;gap:11px;padding:14px 16px;}
+.prop-footer .pin{color:var(--primary);flex:0 0 auto;margin-top:1px;}
+.prop-footer .pin .i{width:18px;height:18px;}
+.prop-footer .lbl{font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--muted);text-transform:uppercase;}
+.prop-footer .addr{font-size:13.5px;font-weight:500;color:var(--body);margin-top:3px;}
+
+/* Main panel placeholder (filled next prompt) */
+.main-panel{min-height:400px;display:flex;flex-direction:column;gap:22px;}
+.placeholder{
+  border:1.5px dashed var(--line);border-radius:var(--r-card);
+  padding:48px;text-align:center;color:var(--muted);background:var(--surface);
+}
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+.toast-wrap{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:100;display:flex;flex-direction:column;gap:8px;align-items:center;}
+.toast{
+  display:flex;align-items:center;gap:9px;background:var(--ink);color:#fff;
+  padding:11px 16px;border-radius:var(--r-control);font-size:13px;font-weight:500;
+  box-shadow:var(--shadow-sheet);opacity:0;transform:translateY(8px);transition:opacity .2s,transform .2s;
+}
+.toast.show{opacity:1;transform:translateY(0);}
+.toast .i{width:16px;height:16px;color:var(--success);}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- LEFT NAV RAIL -->
+  <nav class="rail">
+    <div class="logo"><i data-lucide="hard-hat" class="i"></i></div>
+    <a class="nav-item" href="#"><i data-lucide="layout-dashboard" class="i"></i>Dashboard</a>
+    <a class="nav-item active" href="#"><i data-lucide="briefcase" class="i"></i>Jobs</a>
+    <a class="nav-item" href="#"><i data-lucide="calendar" class="i"></i>Calendar</a>
+    <a class="nav-item" href="#"><i data-lucide="ruler" class="i"></i>Measure</a>
+    <a class="nav-item" href="#"><i data-lucide="file-text" class="i"></i>Proposals</a>
+    <a class="nav-item" href="#"><i data-lucide="receipt" class="i"></i>Invoicing</a>
+    <a class="nav-item" href="#"><i data-lucide="package" class="i"></i>Materials</a>
+    <a class="nav-item" href="#"><i data-lucide="bar-chart-3" class="i"></i>Reports</a>
+    <a class="nav-item" href="#"><i data-lucide="settings" class="i"></i>Settings</a>
+  </nav>
+
+  <!-- BROWSER FRAME -->
+  <div class="frame">
+
+    <div class="chrome">
+      <div class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
+      <div class="urlbar"><i data-lucide="lock" class="i"></i>app.roofpilot.com/jobs/10428</div>
+      <button class="refresh"><i data-lucide="rotate-cw" class="i"></i></button>
+    </div>
+
+    <div class="viewport">
+
+      <!-- TOP BAR -->
+      <header class="topbar">
+        <div class="crumb">Jobs<i data-lucide="chevron-right" class="i"></i><b>Henderson Residence</b></div>
+        <div class="topbar-row">
+          <div>
+            <h1 class="job-title">Henderson Residence — Roof Replacement</h1>
+            <div class="title-meta">
+              <span class="chip num">#10428</span>
+              <span class="contact-line"><i data-lucide="user" class="i"></i><b>Marcus Henderson</b> · <span class="num">(318) 555-0142</span></span>
+            </div>
+          </div>
+          <div class="actions">
+            <button class="btn" onclick="toast('Note added')"><i data-lucide="sticky-note" class="i"></i>Note</button>
+            <button class="btn" onclick="toast('Task created')"><i data-lucide="check-square" class="i"></i>Task</button>
+            <button class="btn" onclick="toast('Email drafted')"><i data-lucide="mail" class="i"></i>Email</button>
+            <button class="btn" onclick="toast('Message sent')"><i data-lucide="message-square" class="i"></i>Message</button>
+            <div class="split">
+              <button class="btn btn-primary split-main" onclick="toast('Create menu')"><i data-lucide="plus" class="i"></i>Create</button>
+              <button class="btn btn-primary split-caret" onclick="toast('Create menu')"><i data-lucide="chevron-down" class="i"></i></button>
+            </div>
+            <button class="btn btn-icon" onclick="toast('More options')"><i data-lucide="more-horizontal" class="i"></i></button>
+          </div>
+        </div>
+      </header>
+
+      <!-- PIPELINE -->
+      <div class="pipeline">
+        <div class="stage done"><div class="stage-node"><i data-lucide="check" class="i"></i></div><span class="stage-label">Lead</span></div>
+        <div class="connector done"></div>
+        <div class="stage current"><div class="stage-node"><i data-lucide="square-pen" class="i"></i></div><span class="stage-label">Estimating</span></div>
+        <div class="connector"></div>
+        <div class="stage"><div class="stage-node"><i data-lucide="handshake" class="i"></i></div><span class="stage-label">Sold</span></div>
+        <div class="connector"></div>
+        <div class="stage"><div class="stage-node"><i data-lucide="hammer" class="i"></i></div><span class="stage-label">In Production</span></div>
+        <div class="connector"></div>
+        <div class="stage"><div class="stage-node"><i data-lucide="dollar-sign" class="i"></i></div><span class="stage-label">Accounts Rec.</span></div>
+        <div class="connector"></div>
+        <div class="stage"><div class="stage-node"><i data-lucide="flag" class="i"></i></div><span class="stage-label">Completed</span></div>
+      </div>
+
+      <!-- CONTENT -->
+      <div class="content">
+
+        <!-- LEFT COLUMN -->
+        <aside class="left-col">
+
+          <div class="nextstep">
+            <div class="eyebrow"><i data-lucide="zap" class="i"></i>Recommended next step</div>
+            <h3>Send the estimate to Marcus</h3>
+            <div class="sub"><i data-lucide="check-circle-2" class="i"></i>Inspection completed Jul 22 · estimate ready</div>
+            <button class="btn-accent" onclick="toast('Proposal sent to Marcus')"><i data-lucide="play" class="i"></i>Send proposal</button>
+          </div>
+
+          <div class="card propcard">
+            <div class="roofphoto">
+              <i data-lucide="home" class="i"></i>
+              <span class="cap">roof photo</span>
+            </div>
+            <div class="prop-footer">
+              <span class="pin"><i data-lucide="map-pin" class="i"></i></span>
+              <div>
+                <div class="lbl">Property</div>
+                <div class="addr">1234 Texas Avenue, Shreveport, LA 71101</div>
+              </div>
+            </div>
+          </div>
+
+        </aside>
+
+        <!-- MAIN PANEL (next prompt) -->
+        <main class="main-panel">
+          <div class="placeholder">Main panel — coming next</div>
+        </main>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<script>
+  lucide.createIcons();
+
+  function toast(msg){
+    const wrap=document.getElementById('toastWrap');
+    const el=document.createElement('div');
+    el.className='toast';
+    el.innerHTML='<i data-lucide="check-circle-2" class="i"></i><span>'+msg+'</span>';
+    wrap.appendChild(el);
+    lucide.createIcons();
+    requestAnimationFrame(()=>el.classList.add('show'));
+    setTimeout(()=>{el.classList.remove('show');setTimeout(()=>el.remove(),250);},2400);
+  }
+</script>
+</body>
+</html>
