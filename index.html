@@ -213,12 +213,145 @@ h1.job-title{font-size:23px;font-weight:700;color:var(--ink);letter-spacing:-.01
 .prop-footer .lbl{font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--muted);text-transform:uppercase;}
 .prop-footer .addr{font-size:13.5px;font-weight:500;color:var(--body);margin-top:3px;}
 
-/* Main panel placeholder (filled next prompt) */
-.main-panel{min-height:400px;display:flex;flex-direction:column;gap:22px;}
-.placeholder{
-  border:1.5px dashed var(--line);border-radius:var(--r-card);
-  padding:48px;text-align:center;color:var(--muted);background:var(--surface);
+/* ============================================================
+   MAIN PANEL
+   ============================================================ */
+.main-panel{min-width:0;}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);overflow:hidden;}
+.panel-head{
+  display:flex;align-items:flex-end;justify-content:space-between;gap:16px;
+  border-bottom:1px solid var(--line);padding:0 18px;
 }
+.tabbar{display:flex;gap:4px;flex-wrap:wrap;align-items:flex-end;}
+.tab{
+  display:flex;align-items:center;gap:7px;
+  padding:14px 12px 12px;color:var(--muted);font-weight:600;font-size:13.5px;
+  border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;
+}
+.tab:hover{color:var(--body);}
+.tab.active{color:var(--primary);border-bottom-color:var(--primary);}
+.tab-pill{
+  font-weight:600;font-size:11px;padding:2px 7px;border-radius:999px;
+  background:var(--canvas);color:var(--muted);
+}
+.tab.active .tab-pill{background:var(--primary-tint);color:var(--primary);}
+
+.segmented{display:flex;background:var(--canvas);border:1px solid var(--line);border-radius:var(--r-control);padding:3px;margin:8px 0;flex:0 0 auto;}
+.seg-btn{display:flex;align-items:center;gap:6px;padding:6px 11px;border-radius:7px;color:var(--muted);font-weight:600;font-size:12.5px;}
+.seg-btn .i{width:14px;height:14px;}
+.seg-btn.active{background:var(--surface);color:var(--primary);box-shadow:0 1px 2px rgba(11,18,32,.08);}
+
+.panel-body{padding:20px;}
+#store{display:none;}
+
+/* Section header row (+ Add ...) */
+.sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.sec-title{font-family:'Inter Tight';font-size:15px;font-weight:600;color:var(--ink);}
+.btn-sm{padding:6px 11px;font-size:12.5px;border-radius:8px;}
+.btn-sm .i{width:14px;height:14px;}
+.edit-hint{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:12px;margin-bottom:16px;}
+.edit-hint .i{width:13px;height:13px;}
+
+/* Contacts */
+.contact-list{display:flex;flex-direction:column;gap:10px;}
+.contact-row{display:flex;align-items:center;gap:13px;padding:12px 14px;border:1px solid var(--line);border-radius:var(--r-control);}
+.avatar{
+  width:38px;height:38px;border-radius:50%;flex:0 0 auto;
+  background:var(--primary-tint);color:var(--primary);
+  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;
+}
+.contact-info{flex:1;min-width:0;}
+.contact-name{display:flex;align-items:center;gap:8px;font-weight:600;color:var(--ink);font-size:14px;}
+.contact-sub{color:var(--muted);font-size:12.5px;margin-top:2px;}
+.badge{font-size:10.5px;font-weight:700;letter-spacing:.03em;padding:2px 8px;border-radius:999px;text-transform:uppercase;}
+.badge-primary{background:var(--primary-tint);color:var(--primary);}
+.badge-secondary{background:#F1F5F9;color:var(--slate);}
+.contact-acts{display:flex;gap:4px;flex:0 0 auto;}
+.icon-btn{
+  width:32px;height:32px;border-radius:8px;border:1px solid var(--line);background:var(--surface);
+  display:flex;align-items:center;justify-content:center;color:var(--muted);transition:background .12s,color .12s,border-color .12s;
+}
+.icon-btn .i{width:15px;height:15px;}
+.icon-btn:hover{background:var(--primary-tint);color:var(--primary);border-color:var(--primary-tint);}
+
+/* Job info */
+.info-group{padding:16px 0;border-top:1px solid var(--line);}
+.info-group:first-of-type{border-top:none;padding-top:0;}
+.group-title{display:flex;align-items:center;gap:8px;font-weight:600;font-size:12.5px;color:var(--ink);margin-bottom:13px;}
+.group-title .i{width:15px;height:15px;color:var(--muted);}
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 20px;}
+.field{display:flex;flex-direction:column;gap:3px;}
+.field label{font-size:11px;font-weight:600;letter-spacing:.03em;color:var(--muted);text-transform:uppercase;}
+.val{font-size:13.5px;font-weight:500;color:var(--body);}
+.editable{cursor:text;border-radius:6px;padding:2px 5px;margin:-2px -5px;transition:background .12s,box-shadow .12s;display:inline-block;}
+.editable:hover{background:var(--primary-tint);box-shadow:inset 0 0 0 1px #DDE0FB;}
+.editable input{font:inherit;color:var(--ink);border:1px solid var(--primary);border-radius:6px;padding:2px 5px;margin:-3px -6px;width:100%;min-width:120px;outline:none;}
+.tag-row{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+.tag{display:inline-flex;align-items:center;gap:4px;background:var(--canvas);color:var(--body);font-size:12px;font-weight:500;padding:3px 9px;border-radius:999px;border:1px solid var(--line);}
+
+/* Tasks */
+.task-list{display:flex;flex-direction:column;gap:9px;}
+.task{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--line);border-radius:var(--r-control);}
+.task-check{width:18px;height:18px;flex:0 0 auto;accent-color:var(--primary);cursor:pointer;}
+.task-main{flex:1;min-width:0;}
+.task-title{font-weight:600;font-size:13.5px;color:var(--ink);}
+.task-meta{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12px;margin-top:3px;}
+.mini-avatar{width:20px;height:20px;border-radius:50%;background:var(--primary-tint);color:var(--primary);display:inline-flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:700;}
+.task.done .task-title{text-decoration:line-through;color:var(--muted);}
+.chip-pri{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;flex:0 0 auto;}
+.chip-pri .i{width:12px;height:12px;}
+.pri-high{background:var(--danger-tint);color:var(--danger);}
+.pri-medium{background:var(--warning-tint);color:var(--warning);}
+.pri-done{background:var(--success-tint);color:var(--success);}
+
+/* Financial */
+.fin{display:flex;flex-direction:column;gap:2px;}
+.fin-total{display:flex;flex-direction:column;gap:4px;padding-bottom:16px;margin-bottom:16px;border-bottom:1px solid var(--line);}
+.fin-total .lbl{font-size:11px;font-weight:600;letter-spacing:.03em;color:var(--muted);text-transform:uppercase;}
+.fin-total .amt{font-family:'Inter Tight';font-size:34px;font-weight:700;color:var(--ink);letter-spacing:-.01em;}
+.fin-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;}
+.fin-row .k{color:var(--body);font-size:13.5px;}
+.fin-row .v{font-weight:600;color:var(--ink);font-size:14px;}
+.fin .btn-primary{margin-top:14px;width:100%;justify-content:center;padding:11px;}
+
+/* Documents */
+.doc-list{display:flex;flex-direction:column;gap:9px;}
+.doc-row{display:flex;align-items:center;gap:13px;padding:12px 14px;border:1px solid var(--line);border-radius:var(--r-control);cursor:pointer;transition:background .12s,border-color .12s;text-align:left;width:100%;}
+.doc-row:hover{background:var(--canvas);border-color:#D3D9E3;}
+.doc-icon{width:36px;height:36px;border-radius:8px;background:var(--canvas);display:flex;align-items:center;justify-content:center;color:var(--muted);flex:0 0 auto;}
+.doc-icon .i{width:18px;height:18px;}
+.doc-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;}
+.doc-name{font-weight:600;font-size:13.5px;color:var(--ink);}
+.doc-sub{color:var(--muted);font-size:12px;margin-top:2px;}
+.chip-status{font-size:10.5px;font-weight:700;letter-spacing:.03em;padding:2px 8px;border-radius:999px;text-transform:uppercase;flex:0 0 auto;display:inline-flex;align-items:center;gap:4px;}
+.chip-status .i{width:11px;height:11px;}
+.st-draft{background:#F1F5F9;color:var(--slate);}
+.st-sent{background:var(--info-tint);color:var(--info);}
+.st-signed{background:var(--success-tint);color:var(--success);}
+.st-overdue{background:var(--danger-tint);color:var(--danger);}
+
+/* Activity timeline */
+.timeline{display:flex;flex-direction:column;}
+.tl-item{display:flex;gap:13px;position:relative;padding-bottom:20px;}
+.tl-item:last-child{padding-bottom:0;}
+.tl-item::before{content:"";position:absolute;left:15px;top:32px;bottom:0;width:2px;background:var(--line);}
+.tl-item:last-child::before{display:none;}
+.tl-dot{width:32px;height:32px;border-radius:50%;background:var(--canvas);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--muted);flex:0 0 auto;z-index:1;}
+.tl-dot .i{width:15px;height:15px;}
+.tl-body{padding-top:5px;}
+.tl-text{font-size:13.5px;color:var(--body);}
+.tl-text b{color:var(--ink);font-weight:600;}
+.tl-date{font-size:12px;color:var(--muted);margin-top:2px;}
+
+/* Accordion */
+.acc-row{border:1px solid var(--line);border-radius:var(--r-control);margin-bottom:10px;overflow:hidden;}
+.acc-head{display:flex;align-items:center;justify-content:space-between;width:100%;padding:14px 16px;background:var(--surface);transition:background .12s;}
+.acc-head:hover{background:var(--canvas);}
+.acc-title{display:flex;align-items:center;gap:9px;font-family:'Inter Tight';font-size:14px;font-weight:600;color:var(--ink);}
+.acc-chevron{width:18px;height:18px;color:var(--muted);transition:transform .18s;}
+.acc-row.open .acc-chevron{transform:rotate(180deg);}
+.acc-body{padding:0 16px 18px;border-top:1px solid var(--line);}
+.acc-row:not(.open) .acc-body{display:none;}
 
 /* ============================================================
    TOAST
@@ -331,15 +464,198 @@ h1.job-title{font-size:23px;font-weight:700;color:var(--ink);letter-spacing:-.01
 
         </aside>
 
-        <!-- MAIN PANEL (next prompt) -->
+        <!-- MAIN PANEL -->
         <main class="main-panel">
-          <div class="placeholder">Main panel — coming next</div>
+          <section class="panel">
+            <div class="panel-head">
+              <div class="tabbar" id="tabbar"></div>
+              <div class="segmented" id="segmented">
+                <button class="seg-btn active" data-view="tabs"><i data-lucide="layout-panel-top" class="i"></i>Tabs</button>
+                <button class="seg-btn" data-view="accordion"><i data-lucide="rows-3" class="i"></i>Accordion</button>
+              </div>
+            </div>
+            <div class="panel-body" id="panelBody"></div>
+          </section>
         </main>
 
       </div>
 
     </div>
   </div>
+</div>
+
+<!-- SECTION STORE (nodes are moved into the active view) -->
+<div id="store">
+
+  <!-- CONTACTS -->
+  <div data-sec="contacts">
+    <div class="sec-head">
+      <span class="sec-title">Contacts</span>
+      <button class="btn btn-sm" onclick="addContact(this)"><i data-lucide="plus" class="i"></i>Add contact</button>
+    </div>
+    <div class="contact-list">
+      <div class="contact-row">
+        <div class="avatar">MH</div>
+        <div class="contact-info">
+          <div class="contact-name">Marcus Henderson <span class="badge badge-primary">Primary</span></div>
+          <div class="contact-sub">Homeowner · <span class="num">(318) 555-0142</span></div>
+        </div>
+        <div class="contact-acts">
+          <button class="icon-btn" title="Call" onclick="toast('Calling Marcus Henderson')"><i data-lucide="phone" class="i"></i></button>
+          <button class="icon-btn" title="Text" onclick="toast('Texting Marcus Henderson')"><i data-lucide="message-square" class="i"></i></button>
+          <button class="icon-btn" title="Email" onclick="toast('Emailing Marcus Henderson')"><i data-lucide="mail" class="i"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JOB INFO -->
+  <div data-sec="jobinfo">
+    <div class="edit-hint"><i data-lucide="mouse-pointer-click" class="i"></i>Click any value to edit</div>
+
+    <div class="info-group">
+      <div class="group-title"><i data-lucide="shield" class="i"></i>Insurance &amp; claim</div>
+      <div class="field-grid">
+        <div class="field"><label>Carrier</label><span class="val editable">State Farm</span></div>
+        <div class="field"><label>Claim #</label><span class="val editable num">SF-2026-0098431</span></div>
+        <div class="field"><label>Policy #</label><span class="val editable num">HO-55823901</span></div>
+        <div class="field"><label>Date of loss</label><span class="val editable num">05/14/2026</span></div>
+        <div class="field"><label>Damage type</label><span class="val editable">Hail</span></div>
+      </div>
+    </div>
+
+    <div class="info-group">
+      <div class="group-title"><i data-lucide="home" class="i"></i>Roof</div>
+      <div class="field-grid">
+        <div class="field"><label>Material</label><span class="val editable">Architectural asphalt shingle</span></div>
+        <div class="field"><label>Age</label><span class="val editable">14 yrs</span></div>
+        <div class="field"><label>Last inspection</label><span class="val editable num">07/22/2026</span></div>
+      </div>
+    </div>
+
+    <div class="info-group">
+      <div class="group-title"><i data-lucide="key-round" class="i"></i>Access</div>
+      <div class="field-grid">
+        <div class="field"><label>Gated</label><span class="val editable">No</span></div>
+        <div class="field"><label>Gate code</label><span class="val editable">—</span></div>
+      </div>
+    </div>
+
+    <div class="info-group">
+      <div class="group-title"><i data-lucide="clipboard-list" class="i"></i>Details</div>
+      <div class="field-grid">
+        <div class="field"><label>Status</label><span class="val editable">Estimating</span></div>
+        <div class="field"><label>Type</label><span class="val editable">Retail</span></div>
+        <div class="field"><label>Lead source</label><span class="val editable">Referral</span></div>
+        <div class="field"><label>Assigned</label><span class="val editable">Sam Wells</span></div>
+        <div class="field"><label>Sales rep</label><span class="val editable">Sam Wells</span></div>
+        <div class="field"><label>Tags</label>
+          <span class="tag-row">
+            <span class="tag">Hail damage</span>
+            <span class="tag">Referral</span>
+            <button class="tag" onclick="toast('Add tag')"><i data-lucide="plus" class="i" style="width:12px;height:12px"></i></button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TASKS -->
+  <div data-sec="tasks">
+    <div class="sec-head">
+      <span class="sec-title">Tasks</span>
+      <button class="btn btn-sm" onclick="toast('New task')"><i data-lucide="plus" class="i"></i>Add task</button>
+    </div>
+    <div class="task-list">
+      <div class="task">
+        <input type="checkbox" class="task-check">
+        <div class="task-main">
+          <div class="task-title">Follow up on estimate</div>
+          <div class="task-meta"><span class="mini-avatar">SW</span>Sam Wells · <span class="num">Due Jul 31</span></div>
+        </div>
+        <span class="chip-pri pri-high"><i data-lucide="chevrons-up" class="i"></i>High</span>
+      </div>
+      <div class="task">
+        <input type="checkbox" class="task-check">
+        <div class="task-main">
+          <div class="task-title">Order materials from ABC Supply</div>
+          <div class="task-meta"><span class="mini-avatar">SW</span>Sam Wells · <span class="num">Due Aug 5</span></div>
+        </div>
+        <span class="chip-pri pri-medium"><i data-lucide="equal" class="i"></i>Medium</span>
+      </div>
+      <div class="task done">
+        <input type="checkbox" class="task-check" checked>
+        <div class="task-main">
+          <div class="task-title">Complete inspection</div>
+          <div class="task-meta"><span class="mini-avatar">SW</span>Sam Wells · <span class="num">Jul 22</span></div>
+        </div>
+        <span class="chip-pri pri-done"><i data-lucide="check" class="i"></i>Done</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINANCIAL -->
+  <div data-sec="financial">
+    <div class="fin">
+      <div class="fin-total">
+        <span class="lbl">Estimate total</span>
+        <span class="amt num">$18,450</span>
+      </div>
+      <div class="fin-row"><span class="k">Deposit (30%)</span><span class="v num">$5,535</span></div>
+      <div class="fin-row"><span class="k">Balance due</span><span class="v num">$12,915</span></div>
+      <button class="btn btn-primary" onclick="toast('Proposal sent to Marcus')"><i data-lucide="send" class="i"></i>Send proposal</button>
+    </div>
+  </div>
+
+  <!-- DOCUMENTS -->
+  <div data-sec="documents">
+    <div class="sec-head">
+      <span class="sec-title">Documents</span>
+      <button class="btn btn-sm" onclick="toast('Upload document')"><i data-lucide="upload" class="i"></i>Upload</button>
+    </div>
+    <div class="doc-list">
+      <button class="doc-row" onclick="toast('Opening Estimate #E-2211')">
+        <span class="doc-icon"><i data-lucide="file-text" class="i"></i></span>
+        <span class="doc-info"><span class="doc-name">Estimate #E-2211</span><span class="doc-sub">PDF · <span class="num">Jul 24</span></span></span>
+        <span class="chip-status st-draft"><i data-lucide="pencil" class="i"></i>Draft</span>
+      </button>
+      <button class="doc-row" onclick="toast('Opening Inspection photos')">
+        <span class="doc-icon"><i data-lucide="image" class="i"></i></span>
+        <span class="doc-info"><span class="doc-name">Inspection photos</span><span class="doc-sub">6 images · <span class="num">Jul 22</span></span></span>
+      </button>
+      <button class="doc-row" onclick="toast('Opening Measurement report')">
+        <span class="doc-icon"><i data-lucide="ruler" class="i"></i></span>
+        <span class="doc-info"><span class="doc-name">Measurement report</span><span class="doc-sub">PDF · <span class="num">Jul 20</span></span></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ACTIVITY -->
+  <div data-sec="activity">
+    <div class="timeline">
+      <div class="tl-item">
+        <span class="tl-dot"><i data-lucide="file-text" class="i"></i></span>
+        <div class="tl-body"><div class="tl-text">Created <b>Estimate #E-2211</b> <span class="num">($18,450)</span></div><div class="tl-date num">Jul 24, 2026</div></div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-dot"><i data-lucide="camera" class="i"></i></span>
+        <div class="tl-body"><div class="tl-text">Inspection completed · <b>6 photos</b> added</div><div class="tl-date num">Jul 22, 2026</div></div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-dot"><i data-lucide="mail" class="i"></i></span>
+        <div class="tl-body"><div class="tl-text">Email sent — <b>"Inspection appointment confirmed"</b></div><div class="tl-date num">Jul 18, 2026</div></div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-dot"><i data-lucide="sticky-note" class="i"></i></span>
+        <div class="tl-body"><div class="tl-text">Note — <b>"Neighbor referral, hail damage on north slope"</b></div><div class="tl-date num">Jul 16, 2026</div></div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-dot"><i data-lucide="git-branch" class="i"></i></span>
+        <div class="tl-body"><div class="tl-text">Stage changed <b>Lead → Estimating</b></div><div class="tl-date num">Jul 15, 2026</div></div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <div class="toast-wrap" id="toastWrap"></div>
@@ -357,6 +673,145 @@ h1.job-title{font-size:23px;font-weight:700;color:var(--ink);letter-spacing:-.01
     requestAnimationFrame(()=>el.classList.add('show'));
     setTimeout(()=>{el.classList.remove('show');setTimeout(()=>el.remove(),250);},2400);
   }
+
+  /* ===== Panel: tabs / accordion engine ===== */
+  const META=[
+    {id:'contacts',  label:'Contacts',  pill:()=>state.contacts},
+    {id:'jobinfo',   label:'Job info',  pill:()=>'State Farm · Hail'},
+    {id:'tasks',     label:'Tasks',     pill:()=>state.open+' open · '+state.done+' done'},
+    {id:'financial', label:'Financial', pill:()=>'$18,450'},
+    {id:'documents', label:'Documents', pill:()=>'3 files'},
+    {id:'activity',  label:'Activity',  pill:()=>null},
+  ];
+  const state={view:'tabs', active:'contacts', contacts:1, open:2, done:1, openAcc:new Set(['contacts'])};
+
+  const store=document.getElementById('store');
+  const tabbar=document.getElementById('tabbar');
+  const panelBody=document.getElementById('panelBody');
+  const getSec=id=>document.querySelector('[data-sec="'+id+'"]');
+  const stash=()=>META.forEach(m=>store.appendChild(getSec(m.id)));
+
+  function pillHTML(m){const p=m.pill();return p==null?'':'<span class="tab-pill">'+p+'</span>';}
+
+  function render(){
+    if(state.view==='tabs') renderTabs(); else renderAccordion();
+    document.querySelectorAll('.seg-btn').forEach(b=>b.classList.toggle('active',b.dataset.view===state.view));
+    try{localStorage.setItem('rp_view',state.view);}catch(e){}
+    lucide.createIcons();
+  }
+
+  function renderTabs(){
+    stash();
+    tabbar.style.display='flex';
+    tabbar.innerHTML=META.map(m=>
+      '<button class="tab'+(m.id===state.active?' active':'')+'" data-tab="'+m.id+'">'+m.label+pillHTML(m)+'</button>'
+    ).join('');
+    panelBody.innerHTML='<div class="tab-content"></div>';
+    panelBody.querySelector('.tab-content').appendChild(getSec(state.active));
+  }
+
+  function renderAccordion(){
+    stash();
+    tabbar.style.display='none';
+    panelBody.innerHTML=META.map(m=>
+      '<div class="acc-row'+(state.openAcc.has(m.id)?' open':'')+'" data-acc="'+m.id+'">'+
+        '<button class="acc-head" data-acctoggle="'+m.id+'">'+
+          '<span class="acc-title">'+m.label+pillHTML(m)+'</span>'+
+          '<i data-lucide="chevron-down" class="i acc-chevron"></i>'+
+        '</button>'+
+        '<div class="acc-body"></div>'+
+      '</div>'
+    ).join('');
+    META.forEach(m=>panelBody.querySelector('[data-acc="'+m.id+'"] .acc-body').appendChild(getSec(m.id)));
+  }
+
+  function refreshPills(){
+    // update visible pills without losing edits / move state
+    if(state.view==='tabs'){
+      document.querySelectorAll('.tab').forEach(t=>{
+        const m=META.find(x=>x.id===t.dataset.tab);
+        const ex=t.querySelector('.tab-pill'); const p=m.pill();
+        if(ex) ex.textContent=p;
+      });
+    }else{
+      document.querySelectorAll('.acc-title .tab-pill').forEach((ex,i)=>{
+        const m=META[i]; const p=m.pill(); if(p!=null) ex.textContent=p;
+      });
+    }
+  }
+
+  /* event delegation */
+  document.getElementById('segmented').addEventListener('click',e=>{
+    const b=e.target.closest('.seg-btn'); if(!b) return;
+    state.view=b.dataset.view; render();
+  });
+  document.querySelector('.panel').addEventListener('click',e=>{
+    const tab=e.target.closest('.tab');
+    if(tab){state.active=tab.dataset.tab; render(); return;}
+    const acc=e.target.closest('[data-acctoggle]');
+    if(acc){
+      const id=acc.dataset.acctoggle;
+      state.openAcc.has(id)?state.openAcc.delete(id):state.openAcc.add(id);
+      acc.closest('.acc-row').classList.toggle('open');
+      return;
+    }
+  });
+
+  /* inline edit */
+  document.addEventListener('click',e=>{
+    const el=e.target.closest('.editable');
+    if(!el || el.querySelector('input')) return;
+    const old=el.textContent;
+    el.innerHTML='<input value="'+old.replace(/"/g,'&quot;')+'">';
+    const inp=el.querySelector('input'); inp.focus(); inp.select();
+    const commit=save=>{
+      const v=save?inp.value.trim():old;
+      el.textContent=v===''?old:v;
+      if(save && v!=='' && v!==old) toast('Field updated');
+    };
+    inp.addEventListener('keydown',ev=>{
+      if(ev.key==='Enter'){ev.preventDefault();commit(true);}
+      else if(ev.key==='Escape'){commit(false);}
+    });
+    inp.addEventListener('blur',()=>commit(true));
+  });
+
+  /* task checkbox */
+  document.addEventListener('change',e=>{
+    if(!e.target.classList.contains('task-check')) return;
+    const task=e.target.closest('.task');
+    const done=e.target.checked;
+    task.classList.toggle('done',done);
+    state.open+=done?-1:1; state.done+=done?1:-1;
+    refreshPills();
+    toast(done?'Task completed':'Task reopened');
+  });
+
+  /* add contact (Priya) */
+  function addContact(){
+    const list=getSec('contacts').querySelector('.contact-list');
+    if(list.querySelector('.priya')) return;
+    const row=document.createElement('div');
+    row.className='contact-row priya';
+    row.innerHTML=
+      '<div class="avatar">PH</div>'+
+      '<div class="contact-info">'+
+        '<div class="contact-name">Priya Henderson <span class="badge badge-secondary">Secondary</span></div>'+
+        '<div class="contact-sub">Spouse · <span class="num">(318) 555-0187</span></div>'+
+      '</div>'+
+      '<div class="contact-acts">'+
+        '<button class="icon-btn" title="Call" onclick="toast(\'Calling Priya Henderson\')"><i data-lucide="phone" class="i"></i></button>'+
+        '<button class="icon-btn" title="Text" onclick="toast(\'Texting Priya Henderson\')"><i data-lucide="message-square" class="i"></i></button>'+
+        '<button class="icon-btn" title="Email" onclick="toast(\'Emailing Priya Henderson\')"><i data-lucide="mail" class="i"></i></button>'+
+      '</div>';
+    list.appendChild(row);
+    state.contacts=2; refreshPills(); lucide.createIcons();
+    toast('Priya Henderson added');
+  }
+
+  /* init */
+  try{const v=localStorage.getItem('rp_view'); if(v==='tabs'||v==='accordion') state.view=v;}catch(e){}
+  render();
 </script>
 </body>
 </html>
