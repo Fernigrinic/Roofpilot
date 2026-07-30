@@ -396,6 +396,19 @@ h1.job-title{font-size:23px;font-weight:700;color:var(--ink);letter-spacing:-.01
 }
 .cmp-field textarea{min-height:104px;resize:vertical;line-height:1.5;}
 .cmp-field input:focus,.cmp-field textarea:focus,.cmp-field select:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-tint);}
+.cmp-err{display:none;font-size:12px;color:var(--danger);margin-top:2px;align-items:center;gap:5px;}
+.cmp-err:not(:empty){display:flex;}
+.cmp-err .i{width:13px;height:13px;flex:0 0 auto;}
+.cmp-field input.invalid,.cmp-field .invalid{border-color:var(--danger);box-shadow:0 0 0 3px var(--danger-tint);}
+.cmp-radio{display:flex;gap:8px;}
+.radio-opt{flex:1;padding:10px;border:1px solid var(--line);border-radius:var(--r-control);font-weight:600;font-size:13px;color:var(--body);background:var(--surface);}
+.radio-opt.active{border-color:var(--primary);background:var(--primary-tint);color:var(--primary);}
+.cmp-toggle-row{flex-direction:row!important;align-items:center;justify-content:space-between;gap:12px;}
+.cmp-toggle-row label{font-size:13.5px;font-weight:500;color:var(--body);}
+.cmp-switch{width:44px;height:26px;border-radius:999px;background:var(--line);position:relative;transition:background .15s;flex:0 0 auto;}
+.cmp-switch .knob{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(11,18,32,.25);transition:left .15s;}
+.cmp-switch.on{background:var(--primary);}
+.cmp-switch.on .knob{left:21px;}
 .cmp-foot{display:flex;justify-content:flex-end;align-items:center;gap:10px;padding:14px 20px;border-top:1px solid var(--line);}
 .cmp-foot .btn[disabled]{opacity:.65;cursor:default;}
 .spinner{width:15px;height:15px;border:2px solid rgba(255,255,255,.45);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;flex:0 0 auto;}
@@ -787,23 +800,20 @@ h1.job-title{font-size:23px;font-weight:700;color:var(--ink);letter-spacing:-.01
     <div class="m-acc" data-macc>
       <button class="m-acc-head" onclick="toggleM(this)">
         <span class="m-acc-ic"><i data-lucide="users" class="i"></i></span>
-        <span class="m-acc-tt"><span class="t">Contacts</span><span class="s">2 contacts</span></span>
+        <span class="m-acc-tt"><span class="t">Contacts</span><span class="s" id="mContactSummary">1 contact</span></span>
         <i data-lucide="chevron-down" class="i m-acc-chev"></i>
       </button>
       <div class="m-acc-body">
-        <div class="contact-list">
+        <div class="sec-head" style="margin-bottom:12px;">
+          <span></span>
+          <button class="btn btn-sm" onclick="openComposer('contact')"><i data-lucide="plus" class="i"></i>Add contact</button>
+        </div>
+        <div class="contact-list" id="mContactList">
           <div class="contact-row">
             <div class="avatar">MH</div>
             <div class="contact-info">
               <div class="contact-name">Marcus Henderson <span class="badge badge-primary">Primary</span></div>
               <div class="contact-sub">Homeowner · <span class="num">(318) 555-0142</span></div>
-            </div>
-          </div>
-          <div class="contact-row">
-            <div class="avatar">PH</div>
-            <div class="contact-info">
-              <div class="contact-name">Priya Henderson <span class="badge badge-secondary">Secondary</span></div>
-              <div class="contact-sub">Spouse · <span class="num">(318) 555-0187</span></div>
             </div>
           </div>
         </div>
@@ -950,7 +960,7 @@ h1.job-title{font-size:23px;font-weight:700;color:var(--ink);letter-spacing:-.01
   <div data-sec="contacts">
     <div class="sec-head">
       <span class="sec-title">Contacts</span>
-      <button class="btn btn-sm" onclick="addContact(this)"><i data-lucide="plus" class="i"></i>Add contact</button>
+      <button class="btn btn-sm" onclick="openComposer('contact')"><i data-lucide="plus" class="i"></i>Add contact</button>
     </div>
     <div class="contact-list">
       <div class="contact-row">
@@ -1177,6 +1187,7 @@ h1.job-title{font-size:23px;font-weight:700;color:var(--ink);letter-spacing:-.01
           {t:'date',n:'due',l:'Due date',v:'2026-08-01'}]},
         {t:'select',n:'priority',l:'Priority',v:'Medium',options:['High','Medium','Low']}]},
     email:{title:'New email',icon:'mail',submit:'Send email',primary:'subject',
+      delay:1200,pendingLabel:'Sending…',spinner:true,
       fields:[
         {t:'text',n:'to',l:'To',v:'marcus.henderson@gmail.com'},
         {t:'text',n:'subject',l:'Subject',ph:'Subject',focus:1},
@@ -1185,7 +1196,20 @@ h1.job-title{font-size:23px;font-weight:700;color:var(--ink);letter-spacing:-.01
       fields:[
         {t:'text',n:'to',l:'To',v:'(318) 555-0142'},
         {t:'textarea',n:'body',l:'Message',ph:'Text Marcus…',focus:1}]},
+    contact:{title:'Add contact',icon:'user-plus',submit:'Add contact',primary:'first',
+      delay:900,pendingLabel:'Adding…',spinner:true,noFailWord:true,
+      fields:[
+        {t:'row',fields:[
+          {t:'text',n:'first',l:'First name',v:'Priya',required:1,focus:1},
+          {t:'text',n:'last',l:'Last name',v:'Henderson',required:1}]},
+        {t:'text',n:'rel',l:'Relationship',v:'Spouse'},
+        {t:'row',fields:[
+          {t:'text',n:'mobile',l:'Mobile',v:'(318) 555-0187',validate:'phone'},
+          {t:'text',n:'email',l:'Email',v:'priya.henderson@gmail.com',validate:'email'}]},
+        {t:'radio',n:'setas',l:'Set as',v:'Secondary',options:['Primary','Secondary']},
+        {t:'toggle',n:'sameaddr',l:'Same address as job',v:true}]},
   };
+  const flatFields=fs=>fs.flatMap(f=>f.t==='row'?f.fields:[f]);
 
   const cmpBackdrop=document.getElementById('cmpBackdrop');
   let cmp={type:null,pending:false,seq:0};
@@ -1193,12 +1217,34 @@ h1.job-title{font-size:23px;font-weight:700;color:var(--ink);letter-spacing:-.01
   function fieldHTML(f){
     if(f.t==='row') return '<div class="cmp-field row2" style="grid-column:1/-1">'+f.fields.map(x=>fieldHTML(x)).join('')+'</div>';
     const id='cf_'+f.n;
+    if(f.t==='toggle'){
+      return '<div class="cmp-field cmp-toggle-row"><label for="'+id+'">'+f.l+'</label>'+
+        '<button type="button" role="switch" aria-checked="'+(!!f.v)+'" id="'+id+'" data-name="'+f.n+'" data-value="'+(!!f.v)+'" class="cmp-switch'+(f.v?' on':'')+'" onclick="toggleSwitch(this)"><span class="knob"></span></button></div>';
+    }
+    if(f.t==='radio'){
+      return '<div class="cmp-field"><label>'+f.l+'</label>'+
+        '<div class="cmp-radio" data-name="'+f.n+'" data-value="'+esc(f.v)+'">'+
+        f.options.map(o=>'<button type="button" class="radio-opt'+(o===f.v?' active':'')+'" data-val="'+o+'" onclick="pickRadio(this)">'+o+'</button>').join('')+
+        '</div></div>';
+    }
     let ctrl;
     if(f.t==='textarea') ctrl='<textarea id="'+id+'" data-name="'+f.n+'" placeholder="'+(f.ph||'')+'"></textarea>';
     else if(f.t==='select') ctrl='<select id="'+id+'" data-name="'+f.n+'">'+f.options.map(o=>'<option'+(o===f.v?' selected':'')+'>'+o+'</option>').join('')+'</select>';
     else ctrl='<input id="'+id+'" data-name="'+f.n+'" type="'+(f.t)+'" value="'+esc(f.v||'')+'" placeholder="'+(f.ph||'')+'">';
     const wrap=f.t==='row'?'':'cmp-field';
-    return '<div class="'+wrap+'"><label for="'+id+'">'+f.l+'</label>'+ctrl+'</div>';
+    const errSlot=(f.required||f.validate)?'<div class="cmp-err" data-err="'+f.n+'"></div>':'';
+    return '<div class="'+wrap+'"><label for="'+id+'">'+f.l+'</label>'+ctrl+errSlot+'</div>';
+  }
+  function pickRadio(btn){
+    const box=btn.closest('.cmp-radio');
+    box.dataset.value=btn.dataset.val;
+    box.querySelectorAll('.radio-opt').forEach(b=>b.classList.toggle('active',b===btn));
+  }
+  function toggleSwitch(btn){
+    const on=btn.dataset.value!=='true';
+    btn.dataset.value=on?'true':'false';
+    btn.setAttribute('aria-checked',on);
+    btn.classList.toggle('on',on);
   }
 
   function openComposer(type){
@@ -1219,14 +1265,43 @@ h1.job-title{font-size:23px;font-weight:700;color:var(--ink);letter-spacing:-.01
   }
   function readComposer(){
     const data={};
-    document.querySelectorAll('#cmpBody [data-name]').forEach(el=>data[el.dataset.name]=el.value.trim());
+    document.querySelectorAll('#cmpBody [data-name]').forEach(el=>{
+      const n=el.dataset.name;
+      if(el.classList.contains('cmp-radio')||el.classList.contains('cmp-switch')) data[n]=el.dataset.value;
+      else data[n]=el.value.trim();
+    });
     return data;
+  }
+  function fieldError(f,val){
+    if(f.required && !val) return f.l+' is required';
+    if(!val) return null;
+    if(f.validate==='email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) return 'Enter a valid email address';
+    if(f.validate==='phone' && val.replace(/\D/g,'').length<10) return 'Enter a valid phone number';
+    return null;
+  }
+  function validateComposer(c,data){
+    let ok=true, firstBad=null;
+    document.querySelectorAll('#cmpBody .cmp-err').forEach(e=>e.innerHTML='');
+    document.querySelectorAll('#cmpBody .invalid').forEach(e=>e.classList.remove('invalid'));
+    flatFields(c.fields).forEach(f=>{
+      if(!(f.required||f.validate)) return;
+      const err=fieldError(f,data[f.n]||'');
+      if(err){
+        ok=false; if(!firstBad) firstBad=f.n;
+        const slot=document.querySelector('#cmpBody [data-err="'+f.n+'"]');
+        if(slot) slot.innerHTML='<i data-lucide="alert-circle" class="i"></i>'+err;
+        const inp=document.getElementById('cf_'+f.n); if(inp) inp.classList.add('invalid');
+      }
+    });
+    if(!ok){ lucide.createIcons(); const el=document.getElementById('cf_'+firstBad); if(el) el.focus(); }
+    return ok;
   }
 
   function submitComposer(){
     if(cmp.pending||!cmp.type) return;
     const c=COMPOSERS[cmp.type];
     const data=readComposer();
+    if(!validateComposer(c,data)) return;
     const primaryVal=data[c.primary]||'';
     if(!primaryVal){const el=document.getElementById('cf_'+c.primary);if(el)el.focus();return;}
     doSubmit(cmp.type,data);
@@ -1239,18 +1314,18 @@ h1.job-title{font-size:23px;font-weight:700;color:var(--ink);letter-spacing:-.01
     const label=document.getElementById('cmpSubmitLabel');
     sub.disabled=true;
     document.getElementById('cmpCancel').disabled=false;
-    const willFail=(data[c.primary]||'').toLowerCase().includes('fail');
-    const isEmail=type==='email';
-    if(isEmail){label.textContent='Sending…';if(!sub.querySelector('.spinner')){const s=document.createElement('span');s.className='spinner';sub.insertBefore(s,label);}}
+    const willFail=!c.noFailWord && (data[c.primary]||'').toLowerCase().includes('fail');
+    if(c.pendingLabel) label.textContent=c.pendingLabel;
+    if(c.spinner && !sub.querySelector('.spinner')){const s=document.createElement('span');s.className='spinner';sub.insertBefore(s,label);}
     const seq=++cmp.seq;
-    const delay=isEmail?1200:260;
+    const delay=c.delay||260;
     setTimeout(()=>{
       if(seq!==cmp.seq) return;            // superseded / cancelled
       cmp.pending=false;
       const spin=sub.querySelector('.spinner'); if(spin) spin.remove();
       label.textContent=c.submit; sub.disabled=false;
       if(willFail){
-        toast((isEmail?'Couldn’t send email':'Couldn’t save')+' — network error',{type:'error',duration:6000,
+        toast('Couldn’t '+(type==='email'?'send email':type==='contact'?'add contact':'save')+' — network error',{type:'error',duration:6000,
           action:{label:'Retry',onClick:()=>doSubmit(type,data)}});
         return;
       }
@@ -1316,7 +1391,49 @@ h1.job-title{font-size:23px;font-weight:700;color:var(--ink);letter-spacing:-.01
       addActivity('message-square','Message sent to <b>Marcus</b>');
       toast('Message sent');
     },
+    contact(data){
+      const name=(data.first+' '+data.last).trim();
+      const secondary=data.setas!=='Primary';
+      addContactRows(data,name,secondary);
+      state.contacts++;
+      refreshPills();
+      const ms=document.getElementById('mContactSummary'); if(ms) ms.textContent=state.contacts+' contacts';
+      addActivity('user-plus','<b>Sam Wells</b> added <b>'+esc(name)+'</b> as a '+(secondary?'secondary':'primary')+' contact');
+      toast('Contact added — '+name);
+    },
   };
+  function addContactRows(data,name,secondary){
+    const initials=((data.first[0]||'')+(data.last[0]||'')).toUpperCase();
+    const badgeCls=secondary?'badge-secondary':'badge-primary';
+    const badgeTxt=secondary?'Secondary':'Primary';
+    const sub=esc(data.rel||'Contact')+' · <span class="num">'+esc(data.mobile||'')+'</span>';
+    // Desktop row (with action buttons)
+    const dList=document.querySelector('[data-sec="contacts"] .contact-list');
+    if(dList){
+      const r=document.createElement('div');
+      r.className='contact-row just-added';
+      r.innerHTML='<div class="avatar">'+initials+'</div>'+
+        '<div class="contact-info"><div class="contact-name">'+esc(name)+' <span class="badge '+badgeCls+'">'+badgeTxt+'</span></div>'+
+        '<div class="contact-sub">'+sub+'</div></div>'+
+        '<div class="contact-acts">'+
+          '<button class="icon-btn" title="Call" onclick="toast(\'Calling '+esc(name)+'\')"><i data-lucide="phone" class="i"></i></button>'+
+          '<button class="icon-btn" title="Text" onclick="toast(\'Texting '+esc(name)+'\')"><i data-lucide="message-square" class="i"></i></button>'+
+          '<button class="icon-btn" title="Email" onclick="toast(\'Emailing '+esc(name)+'\')"><i data-lucide="mail" class="i"></i></button>'+
+        '</div>';
+      dList.appendChild(r);
+    }
+    // Mobile row (no action buttons)
+    const mList=document.getElementById('mContactList');
+    if(mList){
+      const r=document.createElement('div');
+      r.className='contact-row just-added';
+      r.innerHTML='<div class="avatar">'+initials+'</div>'+
+        '<div class="contact-info"><div class="contact-name">'+esc(name)+' <span class="badge '+badgeCls+'">'+badgeTxt+'</span></div>'+
+        '<div class="contact-sub">'+sub+'</div></div>';
+      mList.appendChild(r);
+    }
+    lucide.createIcons();
+  }
 
   /* ===== Panel: tabs / accordion engine ===== */
   const META=[
@@ -1430,28 +1547,6 @@ h1.job-title{font-size:23px;font-weight:700;color:var(--ink);letter-spacing:-.01
     updateTaskCounts();
     toast(done?'Task completed':'Task reopened');
   });
-
-  /* add contact (Priya) */
-  function addContact(){
-    const list=getSec('contacts').querySelector('.contact-list');
-    if(list.querySelector('.priya')) return;
-    const row=document.createElement('div');
-    row.className='contact-row priya';
-    row.innerHTML=
-      '<div class="avatar">PH</div>'+
-      '<div class="contact-info">'+
-        '<div class="contact-name">Priya Henderson <span class="badge badge-secondary">Secondary</span></div>'+
-        '<div class="contact-sub">Spouse · <span class="num">(318) 555-0187</span></div>'+
-      '</div>'+
-      '<div class="contact-acts">'+
-        '<button class="icon-btn" title="Call" onclick="toast(\'Calling Priya Henderson\')"><i data-lucide="phone" class="i"></i></button>'+
-        '<button class="icon-btn" title="Text" onclick="toast(\'Texting Priya Henderson\')"><i data-lucide="message-square" class="i"></i></button>'+
-        '<button class="icon-btn" title="Email" onclick="toast(\'Emailing Priya Henderson\')"><i data-lucide="mail" class="i"></i></button>'+
-      '</div>';
-    list.appendChild(row);
-    state.contacts=2; refreshPills(); lucide.createIcons();
-    toast('Priya Henderson added');
-  }
 
   /* ===== Mobile ===== */
   function toggleM(head){ head.closest('.m-acc').classList.toggle('open'); }
