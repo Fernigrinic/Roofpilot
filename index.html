@@ -303,6 +303,7 @@ h1.job-title{font-size:23px;font-weight:700;color:var(--ink);letter-spacing:-.01
 .pri-high{background:var(--danger-tint);color:var(--danger);}
 .pri-medium{background:var(--warning-tint);color:var(--warning);}
 .pri-done{background:var(--success-tint);color:var(--success);}
+.pri-low{background:#F1F5F9;color:var(--slate);}
 
 /* Financial */
 .fin{display:flex;flex-direction:column;gap:2px;}
@@ -364,6 +365,56 @@ h1.job-title{font-size:23px;font-weight:700;color:var(--ink);letter-spacing:-.01
 }
 .toast.show{opacity:1;transform:translateY(0);}
 .toast .i{width:16px;height:16px;color:var(--success);}
+
+/* ============================================================
+   COMPOSER (modal on desktop, bottom sheet on mobile)
+   ============================================================ */
+.cmp-backdrop{
+  position:fixed;inset:0;z-index:70;background:rgba(11,18,32,.45);
+  display:flex;align-items:center;justify-content:center;padding:20px;
+  opacity:0;pointer-events:none;transition:opacity .2s;
+}
+.cmp-backdrop.open{opacity:1;pointer-events:auto;}
+.composer{
+  background:var(--surface);border-radius:var(--r-sheet);box-shadow:var(--shadow-sheet);
+  width:100%;max-width:480px;max-height:88vh;overflow-y:auto;
+  transform:translateY(12px) scale(.985);opacity:0;transition:transform .22s,opacity .22s;
+}
+.cmp-backdrop.open .composer{transform:none;opacity:1;}
+.cmp-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--line);}
+.cmp-head h3{display:flex;align-items:center;gap:9px;font-family:'Inter Tight';font-size:17px;font-weight:600;color:var(--ink);}
+.cmp-head h3 .i{width:18px;height:18px;color:var(--primary);}
+.cmp-close{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--muted);border:1px solid var(--line);background:var(--surface);}
+.cmp-close .i{width:16px;height:16px;}
+.cmp-body{padding:18px 20px;display:flex;flex-direction:column;gap:14px;}
+.cmp-field{display:flex;flex-direction:column;gap:6px;}
+.cmp-field.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.cmp-field label{font-size:12px;font-weight:600;color:var(--muted);}
+.cmp-field input,.cmp-field textarea,.cmp-field select{
+  font:inherit;font-size:14px;color:var(--ink);background:var(--surface);
+  border:1px solid var(--line);border-radius:var(--r-control);padding:11px 12px;outline:none;width:100%;
+}
+.cmp-field textarea{min-height:104px;resize:vertical;line-height:1.5;}
+.cmp-field input:focus,.cmp-field textarea:focus,.cmp-field select:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-tint);}
+.cmp-foot{display:flex;justify-content:flex-end;align-items:center;gap:10px;padding:14px 20px;border-top:1px solid var(--line);}
+.cmp-foot .btn[disabled]{opacity:.65;cursor:default;}
+.spinner{width:15px;height:15px;border:2px solid rgba(255,255,255,.45);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;flex:0 0 auto;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* Toast variants + action */
+.toast.toast-error{background:var(--danger);}
+.toast.toast-error .i{color:#fff;}
+.toast-action{margin-left:4px;padding:4px 9px;border-radius:7px;background:rgba(255,255,255,.16);color:#fff;font-weight:700;font-size:12.5px;}
+.toast-action:hover{background:rgba(255,255,255,.28);}
+
+/* New-item highlight pulse */
+.just-added{animation:pop .5s ease;}
+@keyframes pop{0%{background:var(--primary-tint);}100%{background:transparent;}}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition-duration:.001ms!important;animation-duration:.001ms!important;animation-iteration-count:1!important;}
+  .spinner{border-top-color:#fff;border-color:rgba(255,255,255,.7);}
+}
 
 /* ============================================================
    MOBILE LAYOUT (≤640px)
@@ -533,6 +584,16 @@ h1.job-title{font-size:23px;font-weight:700;color:var(--ink);letter-spacing:-.01
   .step.future .step-info .sn{color:var(--slate);}
   .step-info .sd{font-size:12px;color:var(--muted);margin-top:1px;}
   .step.current .step-info .sn{color:var(--primary);}
+
+  /* Composer as bottom sheet on mobile */
+  .cmp-backdrop{align-items:flex-end;padding:0;}
+  .composer{
+    max-width:none;border-radius:var(--r-sheet) var(--r-sheet) 0 0;max-height:90vh;
+    transform:translateY(100%);
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+  .cmp-backdrop.open .composer{transform:none;}
+  .cmp-foot .btn{flex:1;justify-content:center;padding:12px;}
 }
 </style>
 </head>
@@ -577,10 +638,10 @@ h1.job-title{font-size:23px;font-weight:700;color:var(--ink);letter-spacing:-.01
             </div>
           </div>
           <div class="actions">
-            <button class="btn" onclick="toast('Note added')"><i data-lucide="sticky-note" class="i"></i>Note</button>
-            <button class="btn" onclick="toast('Task created')"><i data-lucide="check-square" class="i"></i>Task</button>
-            <button class="btn" onclick="toast('Email drafted')"><i data-lucide="mail" class="i"></i>Email</button>
-            <button class="btn" onclick="toast('Message sent')"><i data-lucide="message-square" class="i"></i>Message</button>
+            <button class="btn" onclick="openComposer('note')"><i data-lucide="sticky-note" class="i"></i>Note</button>
+            <button class="btn" onclick="openComposer('task')"><i data-lucide="check-square" class="i"></i>Task</button>
+            <button class="btn" onclick="openComposer('email')"><i data-lucide="mail" class="i"></i>Email</button>
+            <button class="btn" onclick="openComposer('message')"><i data-lucide="message-square" class="i"></i>Message</button>
             <div class="split">
               <button class="btn btn-primary split-main" onclick="toast('Create menu')"><i data-lucide="plus" class="i"></i>Create</button>
               <button class="btn btn-primary split-caret" onclick="toast('Create menu')"><i data-lucide="chevron-down" class="i"></i></button>
@@ -779,7 +840,7 @@ h1.job-title{font-size:23px;font-weight:700;color:var(--ink);letter-spacing:-.01
     <div class="m-acc" data-macc>
       <button class="m-acc-head" onclick="toggleM(this)">
         <span class="m-acc-ic"><i data-lucide="check-square" class="i"></i></span>
-        <span class="m-acc-tt"><span class="t">Tasks</span><span class="s">2 open · 1 done</span></span>
+        <span class="m-acc-tt"><span class="t">Tasks</span><span class="s" id="mTaskSummary">2 open · 1 done</span></span>
         <i data-lucide="chevron-down" class="i m-acc-chev"></i>
       </button>
       <div class="m-acc-body">
@@ -865,11 +926,11 @@ h1.job-title{font-size:23px;font-weight:700;color:var(--ink);letter-spacing:-.01
 
   <!-- Sticky bottom action bar -->
   <nav class="m-bottombar">
-    <button class="m-act" onclick="toast('Note added')"><i data-lucide="sticky-note" class="i"></i>Note</button>
-    <button class="m-act" onclick="toast('Task created')"><i data-lucide="check-square" class="i"></i>Task</button>
-    <button class="m-fab" onclick="toast('Create menu')"><i data-lucide="plus" class="i"></i></button>
-    <button class="m-act" onclick="toast('Email drafted')"><i data-lucide="mail" class="i"></i>Email</button>
-    <button class="m-act" onclick="toast('Message sent')"><i data-lucide="message-square" class="i"></i>Message</button>
+    <button class="m-act" onclick="openComposer('note')"><i data-lucide="sticky-note" class="i"></i>Note</button>
+    <button class="m-act" onclick="openComposer('task')"><i data-lucide="check-square" class="i"></i>Task</button>
+    <button class="m-fab" aria-label="Create" onclick="openComposer('note')"><i data-lucide="plus" class="i"></i></button>
+    <button class="m-act" onclick="openComposer('email')"><i data-lucide="mail" class="i"></i>Email</button>
+    <button class="m-act" onclick="openComposer('message')"><i data-lucide="message-square" class="i"></i>Message</button>
   </nav>
 </div>
 
@@ -1056,21 +1117,206 @@ h1.job-title{font-size:23px;font-weight:700;color:var(--ink);letter-spacing:-.01
 
 </div>
 
-<div class="toast-wrap" id="toastWrap"></div>
+<!-- Composer overlay (modal on desktop, bottom sheet on mobile) -->
+<div class="cmp-backdrop" id="cmpBackdrop" onclick="closeComposer(event)">
+  <div class="composer" id="composer" role="dialog" aria-modal="true" aria-labelledby="cmpTitle" onclick="event.stopPropagation()">
+    <div class="cmp-head">
+      <h3 id="cmpTitle"><i data-lucide="sticky-note" class="i"></i><span>Add note</span></h3>
+      <button class="cmp-close" aria-label="Close" onclick="closeComposer()"><i data-lucide="x" class="i"></i></button>
+    </div>
+    <div class="cmp-body" id="cmpBody"></div>
+    <div class="cmp-foot">
+      <button class="btn" id="cmpCancel" onclick="closeComposer()">Cancel</button>
+      <button class="btn btn-primary" id="cmpSubmit" onclick="submitComposer()"><span id="cmpSubmitLabel">Save</span></button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toastWrap" role="status" aria-live="polite" aria-atomic="false"></div>
 
 <script>
   lucide.createIcons();
 
-  function toast(msg){
+  function toast(msg, opts){
+    opts=opts||{};
     const wrap=document.getElementById('toastWrap');
     const el=document.createElement('div');
-    el.className='toast';
-    el.innerHTML='<i data-lucide="check-circle-2" class="i"></i><span>'+msg+'</span>';
+    const isErr=opts.type==='error';
+    el.className='toast'+(isErr?' toast-error':'');
+    el.setAttribute('role', isErr?'alert':'status');
+    el.innerHTML='<i data-lucide="'+(isErr?'alert-circle':'check-circle-2')+'" class="i"></i><span>'+msg+'</span>';
+    let timer;
+    const dismiss=()=>{clearTimeout(timer);el.classList.remove('show');setTimeout(()=>el.remove(),250);};
+    if(opts.action){
+      const b=document.createElement('button');
+      b.className='toast-action';b.textContent=opts.action.label;
+      b.onclick=()=>{opts.action.onClick();dismiss();};
+      el.appendChild(b);
+    }
     wrap.appendChild(el);
     lucide.createIcons();
     requestAnimationFrame(()=>el.classList.add('show'));
-    setTimeout(()=>{el.classList.remove('show');setTimeout(()=>el.remove(),250);},2400);
+    timer=setTimeout(dismiss, opts.duration||4000);
+    return dismiss;
   }
+
+  /* ===== Composer engine ===== */
+  const TODAY='Jul 30, 2026';
+  const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  function fmtDue(iso){const p=(iso||'').split('-');if(p.length!==3)return iso||'—';return MONTHS[(+p[1])-1]+' '+(+p[2]);}
+
+  const COMPOSERS={
+    note:{title:'Add note',icon:'sticky-note',submit:'Save note',primary:'body',
+      fields:[{t:'textarea',n:'body',l:'Note',ph:'Write a note…',focus:1}]},
+    task:{title:'New task',icon:'check-square',submit:'Create task',primary:'title',
+      fields:[
+        {t:'text',n:'title',l:'Task',ph:'What needs doing?',focus:1},
+        {t:'row',fields:[
+          {t:'text',n:'assignee',l:'Assignee',v:'Sam Wells'},
+          {t:'date',n:'due',l:'Due date',v:'2026-08-01'}]},
+        {t:'select',n:'priority',l:'Priority',v:'Medium',options:['High','Medium','Low']}]},
+    email:{title:'New email',icon:'mail',submit:'Send email',primary:'subject',
+      fields:[
+        {t:'text',n:'to',l:'To',v:'marcus.henderson@gmail.com'},
+        {t:'text',n:'subject',l:'Subject',ph:'Subject',focus:1},
+        {t:'textarea',n:'body',l:'Message',ph:'Write your email…'}]},
+    message:{title:'New message',icon:'message-square',submit:'Send message',primary:'body',
+      fields:[
+        {t:'text',n:'to',l:'To',v:'(318) 555-0142'},
+        {t:'textarea',n:'body',l:'Message',ph:'Text Marcus…',focus:1}]},
+  };
+
+  const cmpBackdrop=document.getElementById('cmpBackdrop');
+  let cmp={type:null,pending:false,seq:0};
+
+  function fieldHTML(f){
+    if(f.t==='row') return '<div class="cmp-field row2" style="grid-column:1/-1">'+f.fields.map(x=>fieldHTML(x)).join('')+'</div>';
+    const id='cf_'+f.n;
+    let ctrl;
+    if(f.t==='textarea') ctrl='<textarea id="'+id+'" data-name="'+f.n+'" placeholder="'+(f.ph||'')+'"></textarea>';
+    else if(f.t==='select') ctrl='<select id="'+id+'" data-name="'+f.n+'">'+f.options.map(o=>'<option'+(o===f.v?' selected':'')+'>'+o+'</option>').join('')+'</select>';
+    else ctrl='<input id="'+id+'" data-name="'+f.n+'" type="'+(f.t)+'" value="'+esc(f.v||'')+'" placeholder="'+(f.ph||'')+'">';
+    const wrap=f.t==='row'?'':'cmp-field';
+    return '<div class="'+wrap+'"><label for="'+id+'">'+f.l+'</label>'+ctrl+'</div>';
+  }
+
+  function openComposer(type){
+    const c=COMPOSERS[type]; if(!c) return;
+    cmp={type:type,pending:false,seq:cmp.seq};
+    document.getElementById('cmpTitle').innerHTML='<i data-lucide="'+c.icon+'" class="i"></i><span>'+c.title+'</span>';
+    document.getElementById('cmpBody').innerHTML=c.fields.map(fieldHTML).join('');
+    document.getElementById('cmpSubmitLabel').textContent=c.submit;
+    const sub=document.getElementById('cmpSubmit'); sub.disabled=false; sub.querySelector('.spinner')&&sub.querySelector('.spinner').remove();
+    cmpBackdrop.classList.add('open');
+    lucide.createIcons();
+    setTimeout(()=>{const f=document.querySelector('#cmpBody [data-name]');const focusF=c.fields.flatMap(x=>x.t==='row'?x.fields:[x]).find(x=>x.focus);if(focusF){const el=document.getElementById('cf_'+focusF.n);if(el)el.focus();}},220);
+  }
+  function closeComposer(e){
+    if(e&&e.target&&e.target.closest&&e.target.closest('.composer')&&e.currentTarget!==cmpBackdrop) return;
+    cmp.pending=false; cmp.type=null; cmp.seq++;   // invalidate any in-flight submit
+    cmpBackdrop.classList.remove('open');
+  }
+  function readComposer(){
+    const data={};
+    document.querySelectorAll('#cmpBody [data-name]').forEach(el=>data[el.dataset.name]=el.value.trim());
+    return data;
+  }
+
+  function submitComposer(){
+    if(cmp.pending||!cmp.type) return;
+    const c=COMPOSERS[cmp.type];
+    const data=readComposer();
+    const primaryVal=data[c.primary]||'';
+    if(!primaryVal){const el=document.getElementById('cf_'+c.primary);if(el)el.focus();return;}
+    doSubmit(cmp.type,data);
+  }
+
+  function doSubmit(type,data){
+    const c=COMPOSERS[type];
+    cmp.pending=true;
+    const sub=document.getElementById('cmpSubmit');
+    const label=document.getElementById('cmpSubmitLabel');
+    sub.disabled=true;
+    document.getElementById('cmpCancel').disabled=false;
+    const willFail=(data[c.primary]||'').toLowerCase().includes('fail');
+    const isEmail=type==='email';
+    if(isEmail){label.textContent='Sending…';if(!sub.querySelector('.spinner')){const s=document.createElement('span');s.className='spinner';sub.insertBefore(s,label);}}
+    const seq=++cmp.seq;
+    const delay=isEmail?1200:260;
+    setTimeout(()=>{
+      if(seq!==cmp.seq) return;            // superseded / cancelled
+      cmp.pending=false;
+      const spin=sub.querySelector('.spinner'); if(spin) spin.remove();
+      label.textContent=c.submit; sub.disabled=false;
+      if(willFail){
+        toast((isEmail?'Couldn’t send email':'Couldn’t save')+' — network error',{type:'error',duration:6000,
+          action:{label:'Retry',onClick:()=>doSubmit(type,data)}});
+        return;
+      }
+      ACTIONS[type](data);
+      closeComposer();
+    }, delay);
+  }
+
+  /* ===== Optimistic section updates ===== */
+  function addActivity(icon,html){
+    const created=[];
+    document.querySelectorAll('.timeline').forEach(tl=>{
+      const it=document.createElement('div');
+      it.className='tl-item just-added';
+      it.innerHTML='<span class="tl-dot"><i data-lucide="'+icon+'" class="i"></i></span>'+
+        '<div class="tl-body"><div class="tl-text">'+html+'</div><div class="tl-date num">'+TODAY+'</div></div>';
+      tl.prepend(it); created.push(it);
+    });
+    lucide.createIcons();
+    return created;
+  }
+  function addTaskRows(data){
+    const created=[];
+    const lc=(data.priority||'Medium').toLowerCase();
+    const picon=lc==='high'?'chevrons-up':lc==='low'?'chevrons-down':'equal';
+    const plabel=data.priority||'Medium';
+    document.querySelectorAll('.task-list').forEach(list=>{
+      const row=document.createElement('div');
+      row.className='task just-added';
+      row.innerHTML='<input type="checkbox" class="task-check">'+
+        '<div class="task-main"><div class="task-title">'+esc(data.title)+'</div>'+
+        '<div class="task-meta"><span class="mini-avatar">SW</span><span class="num">Due '+fmtDue(data.due)+'</span></div></div>'+
+        '<span class="chip-pri pri-'+lc+'"><i data-lucide="'+picon+'" class="i"></i>'+plabel+'</span>';
+      list.prepend(row); created.push(row);
+    });
+    lucide.createIcons();
+    return created;
+  }
+  function updateTaskCounts(){
+    refreshPills();
+    const m=document.getElementById('mTaskSummary');
+    if(m) m.textContent=state.open+' open · '+state.done+' done';
+  }
+
+  const ACTIONS={
+    note(data){
+      const els=addActivity('sticky-note','Note — <b>“'+esc(data.body)+'”</b>');
+      toast('Note saved',{duration:5000,action:{label:'Undo',onClick:()=>{els.forEach(e=>e.remove());toast('Note removed');}}});
+    },
+    task(data){
+      const rows=addTaskRows(data);
+      const els=addActivity('check-square','Task created — <b>'+esc(data.title)+'</b>');
+      state.open++; updateTaskCounts();
+      toast('Task created · due '+fmtDue(data.due),{duration:5000,action:{label:'Undo',onClick:()=>{
+        rows.forEach(e=>e.remove()); els.forEach(e=>e.remove()); state.open--; updateTaskCounts(); toast('Task removed');
+      }}});
+    },
+    email(data){
+      addActivity('mail','Email sent — <b>“'+esc(data.subject)+'”</b>');
+      toast('Email sent to Marcus');
+    },
+    message(data){
+      addActivity('message-square','Message sent to <b>Marcus</b>');
+      toast('Message sent');
+    },
+  };
 
   /* ===== Panel: tabs / accordion engine ===== */
   const META=[
@@ -1181,7 +1427,7 @@ h1.job-title{font-size:23px;font-weight:700;color:var(--ink);letter-spacing:-.01
     const done=e.target.checked;
     task.classList.toggle('done',done);
     state.open+=done?-1:1; state.done+=done?1:-1;
-    refreshPills();
+    updateTaskCounts();
     toast(done?'Task completed':'Task reopened');
   });
 
